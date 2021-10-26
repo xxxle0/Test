@@ -1,4 +1,107 @@
+basePath: /v1
+host: localhost:8080
 info:
-  contact: {}
-paths: {}
+  contact:
+    email: support@swagger.io
+    name: API Support
+    url: http://www.swagger.io/support
+  description: This is a sample server celler server.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: Swagger Example API
+  version: "1.0"
+paths:
+  /v1/scan-results:
+    get:
+      consumes:
+      - application/json
+      description: Get Scan Result List with Offset & Payload
+      produces:
+      - application/json
+      summary: Get Scan Result List
+    patch:
+      consumes:
+      - application/json
+      description: Update Scan Result
+      parameters:
+      - description: Scan Result ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      summary: Update Scan Result
+    post:
+      consumes:
+      - application/json
+      description: Create Scan Result With ScanResult Payload
+      produces:
+      - application/json
+      summary: Create Scan Result
+  /v1/scan-results/:id:
+    delete:
+      consumes:
+      - application/json
+      description: Delete Scan Result
+      parameters:
+      - description: Scan Result ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      summary: Delete Scan Result
+    get:
+      consumes:
+      - application/json
+      description: Get Scan Result Detail By ID
+      parameters:
+      - description: Scan Result ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      summary: Get Scan Result Detail
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+  BasicAuth:
+    type: basic
+  OAuth2AccessCode:
+    authorizationUrl: https://example.com/oauth/authorize
+    flow: accessCode
+    scopes:
+      admin: ' Grants read and write access to administrative information'
+    tokenUrl: https://example.com/oauth/token
+    type: oauth2
+  OAuth2Application:
+    flow: application
+    scopes:
+      admin: ' Grants read and write access to administrative information'
+      write: ' Grants write access'
+    tokenUrl: https://example.com/oauth/token
+    type: oauth2
+  OAuth2Implicit:
+    authorizationUrl: https://example.com/oauth/authorize
+    flow: implicit
+    scopes:
+      admin: ' Grants read and write access to administrative information'
+      write: ' Grants write access'
+    type: oauth2
+  OAuth2Password:
+    flow: password
+    scopes:
+      admin: ' Grants read and write access to administrative information'
+      read: ' Grants read access'
+      write: ' Grants write access'
+    tokenUrl: https://example.com/oauth/token
+    type: oauth2
 swagger: "2.0"

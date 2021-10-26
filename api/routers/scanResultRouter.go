@@ -7,7 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func InitResultRouter(router *gin.RouterGroup) {
+func InitResultRouter(router *gin.Engine) {
 	v1 := router.Group("/v1")
 	scanResultRouter := v1.Group("/scan-results")
 	scanResultRepository := repositories.InitScanResultRepository()
