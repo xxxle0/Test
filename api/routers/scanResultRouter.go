@@ -9,8 +9,7 @@ import (
 )
 
 func InitResultRouter(router *gin.Engine, db *gorm.DB) {
-	v1 := router.Group("/v1")
-	scanResultRouter := v1.Group("/scan-results")
+	scanResultRouter := router.Group("/v1/scan-results")
 	scanResultRepository := repositories.InitScanResultRepository(db)
 	scanResultService := services.InitScanResultService(scanResultRepository)
 	scanResultController := controllers.ScanResultInit(scanResultService)

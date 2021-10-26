@@ -1,17 +1,19 @@
 package repositories
 
 import (
+	"context"
+
 	"github.com/duybkit13/api/entities"
 	"gorm.io/gorm"
 )
 
 type ScanResultRepositoryI interface {
-	Create(scanResult entities.Result) error
-	FindOne(condition map[string]interface{}) (entities.Result, error)
-	FindMany(condition map[string]interface{}) ([]entities.Result, error)
-	Delete(condition map[string]interface{}) error
-	Update(condition map[string]interface{}, newPayload entities.Result) error
-	Count(condition map[string]interface{}) int64
+	Create(ctx context.Context, scanResult entities.Result) error
+	FindOne(ctx context.Context, condition map[string]interface{}) (entities.Result, error)
+	FindMany(ctx context.Context, condition map[string]interface{}) ([]entities.Result, error)
+	Delete(ctx context.Context, condition map[string]interface{}) error
+	Update(ctx context.Context, condition map[string]interface{}, newPayload entities.Result) error
+	Count(ctx context.Context, condition map[string]interface{}) int64
 }
 
 type ScanResultRepository struct {
@@ -24,12 +26,12 @@ func InitScanResultRepository(dbClient *gorm.DB) ScanResultRepositoryI {
 	}
 }
 
-func (r *ScanResultRepository) Create(scanResult entities.Result) error {
-	result := r.dbClient.Create(&scanResult)
+func (r *ScanResultRepository) Create(ctx context.Context, scanResult entities.Result) error {
+	result := r.dbClient.Model(&entities.Result{}).WithContext(ctx).Create(&scanResult)
 	return result.Error
 }
 
-func (r *ScanResultRepository) FindOne(condition map[string]interface{}) (entities.Result, error) {
+func (r *ScanResultRepository) FindOne(ctx context.Context, condition map[string]interface{}) (entities.Result, error) {
 	var scanResult entities.Result
 	result := r.dbClient.Model(&entities.Result{}).Where(condition).First(&scanResult)
 	if result.Error != nil {
@@ -38,7 +40,7 @@ func (r *ScanResultRepository) FindOne(condition map[string]interface{}) (entiti
 	return scanResult, nil
 }
 
-func (r *ScanResultRepository) FindMany(condition map[string]interface{}) ([]entities.Result, error) {
+func (r *ScanResultRepository) FindMany(ctx context.Context, condition map[string]interface{}) ([]entities.Result, error) {
 	var scanResults []entities.Result
 	result := r.dbClient.Model(&entities.Result{}).Where(condition).Find(&scanResults).Limit(20).Offset(0)
 	if result.Error != nil {
@@ -47,17 +49,17 @@ func (r *ScanResultRepository) FindMany(condition map[string]interface{}) ([]ent
 	return scanResults, nil
 }
 
-func (r *ScanResultRepository) Delete(condition map[string]interface{}) error {
+func (r *ScanResultRepository) Delete(ctx context.Context, condition map[string]interface{}) error {
 	result := r.dbClient.Model(&entities.Result{}).Where(condition).Delete(&entities.Result{})
 	return result.Error
 }
 
-func (r *ScanResultRepository) Update(condition map[string]interface{}, newPayload entities.Result) error {
+func (r *ScanResultRepository) Update(ctx context.Context, condition map[string]interface{}, newPayload entities.Result) error {
 	result := r.dbClient.Model(&entities.Result{}).Where(condition).Updates(newPayload)
 	return result.Error
 }
 
-func (r *ScanResultRepository) Count(condition map[string]interface{}) int64 {
+func (r *ScanResultRepository) Count(ctx context.Context, condition map[string]interface{}) int64 {
 	var count int64
 	r.dbClient.Model(&entities.Result{}).Where(condition).Count(&count)
 	return count

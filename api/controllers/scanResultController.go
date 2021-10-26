@@ -38,7 +38,7 @@ func (s *ScanResultController) CreateScanResult(c *gin.Context) {
 	if err != nil {
 
 	}
-	s.scanResultService.CreateScanResult(createScanResultDto)
+	s.scanResultService.CreateScanResult(c, createScanResultDto)
 }
 
 // @Tags Scan Results
@@ -55,7 +55,7 @@ func (s *ScanResultController) GetScanResultList(c *gin.Context) {
 	if err != nil {
 
 	}
-	s.scanResultService.GetScanResultList(getScanResultListDto)
+	s.scanResultService.GetScanResultList(c, getScanResultListDto)
 }
 
 // @Tags Scan Results
@@ -73,7 +73,7 @@ func (s *ScanResultController) GetScanResultDetail(c *gin.Context) {
 	if err != nil {
 
 	}
-	s.scanResultService.GetScanResultDetail(getScanResultDetailDto)
+	s.scanResultService.GetScanResultDetail(c, getScanResultDetailDto)
 }
 
 // @Tags Scan Results
@@ -91,7 +91,7 @@ func (s *ScanResultController) UpdateScanResult(c *gin.Context) {
 	if err != nil {
 
 	}
-	s.scanResultService.UpdateScanResult(updateScanResultDto)
+	s.scanResultService.UpdateScanResult(c, updateScanResultDto)
 }
 
 // @Tags Scan Results
@@ -109,5 +109,5 @@ func (s *ScanResultController) DeleteScanResult(c *gin.Context) {
 	if err != nil {
 
 	}
-	s.scanResultService.DeleteScanResult(deleteScanResultDto)
+	s.scanResultService.DeleteScanResult(c, deleteScanResultDto)
 }

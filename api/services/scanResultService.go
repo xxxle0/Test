@@ -1,6 +1,7 @@
 package services
 
 import (
+	"context"
 	"log"
 
 	"github.com/duybkit13/api/dtos"
@@ -9,11 +10,11 @@ import (
 )
 
 type ScanResultServiceI interface {
-	CreateScanResult(createScanResultDto dtos.CreateScanResultDto)
-	GetScanResultDetail(getScanResultDetailDto dtos.GetScanResultDetailDto)
-	GetScanResultList(getScanResultListDto dtos.GetScanResultListDto)
-	DeleteScanResult(deleteScanResultDto dtos.DeleteScanResultDto)
-	UpdateScanResult(updateScanResultDto dtos.UpdateScanResultDto)
+	CreateScanResult(ctx context.Context, createScanResultDto dtos.CreateScanResultDto)
+	GetScanResultDetail(ctx context.Context, getScanResultDetailDto dtos.GetScanResultDetailDto)
+	GetScanResultList(ctx context.Context, getScanResultListDto dtos.GetScanResultListDto)
+	DeleteScanResult(ctx context.Context, deleteScanResultDto dtos.DeleteScanResultDto)
+	UpdateScanResult(ctx context.Context, updateScanResultDto dtos.UpdateScanResultDto)
 }
 
 type ScanResultService struct {
@@ -26,7 +27,7 @@ func InitScanResultService(scanResultRepository repositories.ScanResultRepositor
 	}
 }
 
-func (s *ScanResultService) CreateScanResult(createScanResultDto dtos.CreateScanResultDto) {
+func (s *ScanResultService) CreateScanResult(ctx context.Context, createScanResultDto dtos.CreateScanResultDto) {
 	scanResult := entities.Result{
 		Status:         createScanResultDto.Status,
 		RepositoryName: createScanResultDto.RepositoryName,
@@ -34,44 +35,44 @@ func (s *ScanResultService) CreateScanResult(createScanResultDto dtos.CreateScan
 		QueuedAt:       createScanResultDto.QueuedAt,
 		FinishedAt:     createScanResultDto.FinishedAt,
 	}
-	s.scanResultRepository.Create(scanResult)
+	s.scanResultRepository.Create(ctx, scanResult)
 }
 
-func (s *ScanResultService) GetScanResultDetail(getScanResultDetailDto dtos.GetScanResultDetailDto) {
+func (s *ScanResultService) GetScanResultDetail(ctx context.Context, getScanResultDetailDto dtos.GetScanResultDetailDto) {
 	condition := map[string]interface{}{
 		"id": getScanResultDetailDto.ID,
 	}
-	scanResult, err := s.scanResultRepository.FindOne(condition)
+	scanResult, err := s.scanResultRepository.FindOne(ctx, condition)
 	if err != nil {
 
 	}
 	log.Println(scanResult)
 }
 
-func (s *ScanResultService) GetScanResultList(getScanResultListDto dtos.GetScanResultListDto) {
+func (s *ScanResultService) GetScanResultList(ctx context.Context, getScanResultListDto dtos.GetScanResultListDto) {
 	condition := map[string]interface{}{}
-	count := s.scanResultRepository.Count(condition)
-	scanResults, err := s.scanResultRepository.FindMany(condition)
+	count := s.scanResultRepository.Count(ctx, condition)
+	scanResults, err := s.scanResultRepository.FindMany(ctx, condition)
 	if err != nil {
 
 	}
 	log.Println(scanResults, count)
 }
 
-func (s *ScanResultService) DeleteScanResult(deleteScanResultDto dtos.DeleteScanResultDto) {
+func (s *ScanResultService) DeleteScanResult(ctx context.Context, deleteScanResultDto dtos.DeleteScanResultDto) {
 	condition := map[string]interface{}{
 		"id": deleteScanResultDto.ID,
 	}
-	err := s.scanResultRepository.Delete(condition)
+	err := s.scanResultRepository.Delete(ctx, condition)
 	if err != nil {
 
 	}
 }
 
-func (s *ScanResultService) UpdateScanResult(updateScanResultDto dtos.UpdateScanResultDto) {
+func (s *ScanResultService) UpdateScanResult(ctx context.Context, updateScanResultDto dtos.UpdateScanResultDto) {
 	condition := map[string]interface{}{}
 	newPayload := entities.Result{}
-	err := s.scanResultRepository.Update(condition, newPayload)
+	err := s.scanResultRepository.Update(ctx, condition, newPayload)
 	if err != nil {
 
 	}
