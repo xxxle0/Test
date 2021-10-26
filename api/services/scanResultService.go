@@ -2,6 +2,7 @@ package services
 
 import (
 	"github.com/duybkit13/api/dtos"
+	"github.com/duybkit13/api/entities"
 	"github.com/duybkit13/api/repositories"
 )
 
@@ -24,7 +25,14 @@ func InitScanResultService(scanResultRepository repositories.ScanResultRepositor
 }
 
 func (s *ScanResultService) CreateScanResult(createScanResultDto dtos.CreateScanResultDto) {
-
+	scanResult := entities.Result{
+		Status:         createScanResultDto.Status,
+		RepositoryName: createScanResultDto.RepositoryName,
+		ScanningAt:     createScanResultDto.ScanningAt,
+		QueuedAt:       createScanResultDto.QueuedAt,
+		FinishedAt:     createScanResultDto.FinishedAt,
+	}
+	s.scanResultRepository.Create(scanResult)
 }
 
 func (s *ScanResultService) GetScanResultDetail(getScanResultDetailDto dtos.GetScanResultDetailDto) {

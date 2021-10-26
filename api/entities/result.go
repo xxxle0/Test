@@ -1,11 +1,15 @@
 package entities
 
-import "time"
+import (
+	"time"
+
+	"gorm.io/gorm"
+)
 
 type Result struct {
-	ID             int
-	Status         string
+	gorm.Model
 	RepositoryName string
+	Status         int
 	Findings       interface{}
 	QueuedAt       time.Time
 	ScanningAt     time.Time
