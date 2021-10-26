@@ -1,6 +1,8 @@
 package services
 
 import (
+	"log"
+
 	"github.com/duybkit13/api/dtos"
 	"github.com/duybkit13/api/entities"
 	"github.com/duybkit13/api/repositories"
@@ -36,7 +38,14 @@ func (s *ScanResultService) CreateScanResult(createScanResultDto dtos.CreateScan
 }
 
 func (s *ScanResultService) GetScanResultDetail(getScanResultDetailDto dtos.GetScanResultDetailDto) {
+	condition := map[string]interface{}{
+		"id": getScanResultDetailDto.ID,
+	}
+	scanResult, err := s.scanResultRepository.FindOne(condition)
+	if err != nil {
 
+	}
+	log.Println(scanResult)
 }
 
 func (s *ScanResultService) GetScanResultList(getScanResultListDto dtos.GetScanResultListDto) {
@@ -44,9 +53,20 @@ func (s *ScanResultService) GetScanResultList(getScanResultListDto dtos.GetScanR
 }
 
 func (s *ScanResultService) DeleteScanResult(deleteScanResultDto dtos.DeleteScanResultDto) {
+	condition := map[string]interface{}{
+		"id": deleteScanResultDto.ID,
+	}
+	err := s.scanResultRepository.Delete(condition)
+	if err != nil {
 
+	}
 }
 
 func (s *ScanResultService) UpdateScanResult(updateScanResultDto dtos.UpdateScanResultDto) {
+	condition := map[string]interface{}{}
+	newPayload := entities.Result{}
+	err := s.scanResultRepository.Update(condition, newPayload)
+	if err != nil {
 
+	}
 }
