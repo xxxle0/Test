@@ -1,9 +1,14 @@
 package services
 
+import (
+	"github.com/duybkit13/api/dtos"
+	"github.com/duybkit13/api/repositories"
+)
+
 type ScanResultServiceI interface {
 	CreateScanResult(createScanResultDto dtos.CreateScanResultDto)
 	GetScanResultDetail(getScanResultDetailDto dtos.GetScanResultDetailDto)
-	GetScanResultList(getScanResultListDto dtos.GetScanResultListDto) 
+	GetScanResultList(getScanResultListDto dtos.GetScanResultListDto)
 	DeleteScanResult(deleteScanResultDto dtos.DeleteScanResultDto)
 }
 

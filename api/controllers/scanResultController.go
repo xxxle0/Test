@@ -1,5 +1,7 @@
 package controllers
 
+import "github.com/duybkit13/api/services"
+
 type ScanResultControllerI interface {
 }
 
