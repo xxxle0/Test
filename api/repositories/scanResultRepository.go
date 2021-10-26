@@ -11,6 +11,7 @@ type ScanResultRepositoryI interface {
 	FindMany(condition map[string]interface{}) ([]entities.Result, error)
 	Delete(condition map[string]interface{}) error
 	Update(condition map[string]interface{}, newPayload entities.Result) error
+	Count(condition map[string]interface{}) int64
 }
 
 type ScanResultRepository struct {
@@ -39,7 +40,7 @@ func (r *ScanResultRepository) FindOne(condition map[string]interface{}) (entiti
 
 func (r *ScanResultRepository) FindMany(condition map[string]interface{}) ([]entities.Result, error) {
 	var scanResults []entities.Result
-	result := r.dbClient.Model(&entities.Result{}).Where(condition).Find(&scanResults)
+	result := r.dbClient.Model(&entities.Result{}).Where(condition).Find(&scanResults).Limit(20).Offset(0)
 	if result.Error != nil {
 		return scanResults, result.Error
 	}
@@ -54,4 +55,10 @@ func (r *ScanResultRepository) Delete(condition map[string]interface{}) error {
 func (r *ScanResultRepository) Update(condition map[string]interface{}, newPayload entities.Result) error {
 	result := r.dbClient.Model(&entities.Result{}).Where(condition).Updates(newPayload)
 	return result.Error
+}
+
+func (r *ScanResultRepository) Count(condition map[string]interface{}) int64 {
+	var count int64
+	r.dbClient.Model(&entities.Result{}).Where(condition).Count(&count)
+	return count
 }

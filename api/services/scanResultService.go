@@ -49,7 +49,13 @@ func (s *ScanResultService) GetScanResultDetail(getScanResultDetailDto dtos.GetS
 }
 
 func (s *ScanResultService) GetScanResultList(getScanResultListDto dtos.GetScanResultListDto) {
+	condition := map[string]interface{}{}
+	count := s.scanResultRepository.Count(condition)
+	scanResults, err := s.scanResultRepository.FindMany(condition)
+	if err != nil {
 
+	}
+	log.Println(scanResults, count)
 }
 
 func (s *ScanResultService) DeleteScanResult(deleteScanResultDto dtos.DeleteScanResultDto) {
