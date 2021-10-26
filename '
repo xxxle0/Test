@@ -1,2 +1,0 @@
-run:
-	@swag init && go run ./api/main.go
