@@ -10,6 +10,7 @@ type ScanResultServiceI interface {
 	GetScanResultDetail(getScanResultDetailDto dtos.GetScanResultDetailDto)
 	GetScanResultList(getScanResultListDto dtos.GetScanResultListDto)
 	DeleteScanResult(deleteScanResultDto dtos.DeleteScanResultDto)
+	UpdateScanResult(updateScanResultDto dtos.UpdateScanResultDto)
 }
 
 type ScanResultService struct {
@@ -35,5 +36,9 @@ func (s *ScanResultService) GetScanResultList(getScanResultListDto dtos.GetScanR
 }
 
 func (s *ScanResultService) DeleteScanResult(deleteScanResultDto dtos.DeleteScanResultDto) {
+
+}
+
+func (s *ScanResultService) UpdateScanResult(updateScanResultDto dtos.UpdateScanResultDto) {
 
 }

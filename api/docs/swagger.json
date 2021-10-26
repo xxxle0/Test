@@ -1,22 +1,8 @@
 {
     "swagger": "2.0",
     "info": {
-        "description": "This is a sample server celler server.",
-        "title": "Swagger Example API",
-        "termsOfService": "http://swagger.io/terms/",
-        "contact": {
-            "name": "API Support",
-            "url": "http://www.swagger.io/support",
-            "email": "support@swagger.io"
-        },
-        "license": {
-            "name": "Apache 2.0",
-            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
-        },
-        "version": "1.0"
+        "contact": {}
     },
-    "host": "localhost:8080",
-    "basePath": "/v1",
     "paths": {
         "/v1/scan-results": {
             "get": {
@@ -26,6 +12,9 @@
                 ],
                 "produces": [
                     "application/json"
+                ],
+                "tags": [
+                    "Scan Results"
                 ],
                 "summary": "Get Scan Result List"
             },
@@ -37,6 +26,9 @@
                 "produces": [
                     "application/json"
                 ],
+                "tags": [
+                    "Scan Results"
+                ],
                 "summary": "Create Scan Result"
             },
             "patch": {
@@ -46,6 +38,9 @@
                 ],
                 "produces": [
                     "application/json"
+                ],
+                "tags": [
+                    "Scan Results"
                 ],
                 "summary": "Update Scan Result",
                 "parameters": [
@@ -68,6 +63,9 @@
                 "produces": [
                     "application/json"
                 ],
+                "tags": [
+                    "Scan Results"
+                ],
                 "summary": "Get Scan Result Detail",
                 "parameters": [
                     {
@@ -87,6 +85,9 @@
                 "produces": [
                     "application/json"
                 ],
+                "tags": [
+                    "Scan Results"
+                ],
                 "summary": "Delete Scan Result",
                 "parameters": [
                     {
@@ -97,53 +98,6 @@
                         "required": true
                     }
                 ]
-            }
-        }
-    },
-    "securityDefinitions": {
-        "ApiKeyAuth": {
-            "type": "apiKey",
-            "name": "Authorization",
-            "in": "header"
-        },
-        "BasicAuth": {
-            "type": "basic"
-        },
-        "OAuth2AccessCode": {
-            "type": "oauth2",
-            "flow": "accessCode",
-            "authorizationUrl": "https://example.com/oauth/authorize",
-            "tokenUrl": "https://example.com/oauth/token",
-            "scopes": {
-                "admin": " Grants read and write access to administrative information"
-            }
-        },
-        "OAuth2Application": {
-            "type": "oauth2",
-            "flow": "application",
-            "tokenUrl": "https://example.com/oauth/token",
-            "scopes": {
-                "admin": " Grants read and write access to administrative information",
-                "write": " Grants write access"
-            }
-        },
-        "OAuth2Implicit": {
-            "type": "oauth2",
-            "flow": "implicit",
-            "authorizationUrl": "https://example.com/oauth/authorize",
-            "scopes": {
-                "admin": " Grants read and write access to administrative information",
-                "write": " Grants write access"
-            }
-        },
-        "OAuth2Password": {
-            "type": "oauth2",
-            "flow": "password",
-            "tokenUrl": "https://example.com/oauth/token",
-            "scopes": {
-                "admin": " Grants read and write access to administrative information",
-                "read": " Grants read access",
-                "write": " Grants write access"
             }
         }
     }
