@@ -10,11 +10,11 @@ import (
 )
 
 type ScanResultServiceI interface {
-	CreateScanResult(ctx context.Context, createScanResultDto dtos.CreateScanResultDto)
-	GetScanResultDetail(ctx context.Context, getScanResultDetailDto dtos.GetScanResultDetailDto)
-	GetScanResultList(ctx context.Context, getScanResultListDto dtos.GetScanResultListDto)
-	DeleteScanResult(ctx context.Context, deleteScanResultDto dtos.DeleteScanResultDto)
-	UpdateScanResult(ctx context.Context, updateScanResultDto dtos.UpdateScanResultDto)
+	CreateScanResult(ctx context.Context, createScanResultDto dtos.CreateScanResultDto) error
+	GetScanResultDetail(ctx context.Context, getScanResultDetailDto dtos.GetScanResultDetailDto) (dtos.GetScanResultDetailResp, error)
+	GetScanResultList(ctx context.Context, getScanResultListDto dtos.GetScanResultListDto) (dtos.GetScanResultListResp, error)
+	DeleteScanResult(ctx context.Context, deleteScanResultDto dtos.DeleteScanResultDto) error
+	UpdateScanResult(ctx context.Context, updateScanResultDto dtos.UpdateScanResultDto) error
 }
 
 type ScanResultService struct {
@@ -27,7 +27,7 @@ func InitScanResultService(scanResultRepository repositories.ScanResultRepositor
 	}
 }
 
-func (s *ScanResultService) CreateScanResult(ctx context.Context, createScanResultDto dtos.CreateScanResultDto) {
+func (s *ScanResultService) CreateScanResult(ctx context.Context, createScanResultDto dtos.CreateScanResultDto) error {
 	scanResult := entities.Result{
 		Status:         createScanResultDto.Status,
 		RepositoryName: createScanResultDto.RepositoryName,
@@ -35,15 +35,26 @@ func (s *ScanResultService) CreateScanResult(ctx context.Context, createScanResu
 		QueuedAt:       createScanResultDto.QueuedAt,
 		FinishedAt:     createScanResultDto.FinishedAt,
 	}
-	s.scanResultRepository.Create(ctx, scanResult)
+	err := s.scanResultRepository.Create(ctx, scanResult)
+	return err
 }
 
-func (s *ScanResultService) GetScanResultDetail(ctx context.Context, getScanResultDetailDto dtos.GetScanResultDetailDto) {
+func (s *ScanResultService) GetScanResultDetail(ctx context.Context, getScanResultDetailDto dtos.GetScanResultDetailDto) (dtos.GetScanResultDetailResp, error) {
+	var scanResultResp dtos.ScanResultResp
 	scanResult, err := s.GetScanResultDetailById(ctx, getScanResultDetailDto.ID)
 	if err != nil {
-
+		return dtos.GetScanResultDetailResp{}, err
 	}
-	log.Println(scanResult)
+	scanResultResp = dtos.ScanResultResp{
+		ScanningAt:     scanResult.ScanningAt,
+		Status:         scanResult.Status,
+		RepositoryName: scanResult.RepositoryName,
+		QueuedAt:       scanResult.QueuedAt,
+	}
+	getScanResultResp := dtos.GetScanResultDetailResp{
+		ScanResult: scanResultResp,
+	}
+	return getScanResultResp, nil
 }
 
 func (s *ScanResultService) GetScanResultDetailById(ctx context.Context, id int) (entities.Result, error) {
@@ -57,31 +68,31 @@ func (s *ScanResultService) GetScanResultDetailById(ctx context.Context, id int)
 	return scanResult, nil
 }
 
-func (s *ScanResultService) GetScanResultList(ctx context.Context, getScanResultListDto dtos.GetScanResultListDto) {
+func (s *ScanResultService) GetScanResultList(ctx context.Context, getScanResultListDto dtos.GetScanResultListDto) (dtos.GetScanResultListResp, error) {
 	condition := map[string]interface{}{}
 	count := s.scanResultRepository.Count(ctx, condition)
 	scanResults, err := s.scanResultRepository.FindMany(ctx, condition)
+	log.Println(scanResults)
 	if err != nil {
-
+		return dtos.GetScanResultListResp{}, err
 	}
-	log.Println(scanResults, count)
+	getScanResultListResp := dtos.GetScanResultListResp{
+		Total: count,
+	}
+	return getScanResultListResp, nil
 }
 
-func (s *ScanResultService) DeleteScanResult(ctx context.Context, deleteScanResultDto dtos.DeleteScanResultDto) {
+func (s *ScanResultService) DeleteScanResult(ctx context.Context, deleteScanResultDto dtos.DeleteScanResultDto) error {
 	condition := map[string]interface{}{
 		"id": deleteScanResultDto.ID,
 	}
 	err := s.scanResultRepository.Delete(ctx, condition)
-	if err != nil {
-
-	}
+	return err
 }
 
-func (s *ScanResultService) UpdateScanResult(ctx context.Context, updateScanResultDto dtos.UpdateScanResultDto) {
+func (s *ScanResultService) UpdateScanResult(ctx context.Context, updateScanResultDto dtos.UpdateScanResultDto) error {
 	condition := map[string]interface{}{}
 	newPayload := entities.Result{}
 	err := s.scanResultRepository.Update(ctx, condition, newPayload)
-	if err != nil {
-
-	}
+	return err
 }

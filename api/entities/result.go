@@ -9,7 +9,7 @@ import (
 type Result struct {
 	gorm.Model
 	RepositoryName string
-	Status         int
+	Status         uint8
 	// Findings       interface{}
 	QueuedAt   time.Time
 	ScanningAt time.Time

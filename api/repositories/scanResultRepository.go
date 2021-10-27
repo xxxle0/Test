@@ -2,6 +2,7 @@ package repositories
 
 import (
 	"context"
+	"log"
 
 	"github.com/duybkit13/api/entities"
 	"gorm.io/gorm"
@@ -33,6 +34,7 @@ func (r *ScanResultRepository) Create(ctx context.Context, scanResult entities.R
 
 func (r *ScanResultRepository) FindOne(ctx context.Context, condition map[string]interface{}) (entities.Result, error) {
 	var scanResult entities.Result
+	log.Println(condition)
 	result := r.dbClient.Model(&entities.Result{}).Where(condition).First(&scanResult)
 	if result.Error != nil {
 		return scanResult, result.Error

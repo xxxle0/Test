@@ -3,7 +3,7 @@ package dtos
 import "time"
 
 type CreateScanResultDto struct {
-	Status         int         `json:"status"`
+	Status         uint8       `json:"status"`
 	RepositoryName string      `json:"repository_name"`
 	Findings       interface{} `json:"findings"`
 	QueuedAt       time.Time   `json:"queued_at"`
@@ -31,16 +31,31 @@ type UpdateScanResultDto struct {
 }
 
 type CreateScanResultResp struct {
+	Message string `json:"message"`
+}
+
+type ScanResultResp struct {
+	Status         uint8       `json:"status"`
+	RepositoryName string      `json:"repository_name"`
+	Findings       interface{} `json:"findings"`
+	QueuedAt       time.Time   `json:"queued_at"`
+	ScanningAt     time.Time   `json:"scanning_at"`
+	FinishedAt     time.Time   `json:"finished_at"`
 }
 
 type GetScanResultDetailResp struct {
+	ScanResult ScanResultResp `json:"scan_result"`
 }
 
 type GetScanResultListResp struct {
+	ScanResults []ScanResultResp `json:"scan_results"`
+	Total       int64            `json:"total"`
 }
 
 type DeleteScanResultResp struct {
+	Message string `json:"message"`
 }
 
 type UpdateScanResultResp struct {
+	Message string `json:"message"`
 }
