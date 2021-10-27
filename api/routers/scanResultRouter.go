@@ -18,6 +18,6 @@ func InitResultRouter(router *gin.Engine, db *gorm.DB) {
 		scanResultRouter.GET("", scanResultController.GetScanResultList)
 		scanResultRouter.GET("/:id", scanResultController.GetScanResultDetail)
 		scanResultRouter.PATCH("/:id", scanResultController.UpdateScanResult)
-		scanResultRouter.DELETE("", scanResultController.DeleteScanResult)
+		scanResultRouter.DELETE("/:id", scanResultController.DeleteScanResult)
 	}
 }
