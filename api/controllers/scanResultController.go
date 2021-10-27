@@ -1,6 +1,8 @@
 package controllers
 
 import (
+	"log"
+
 	"github.com/duybkit13/api/dtos"
 	"github.com/duybkit13/api/services"
 	"github.com/gin-gonic/gin"
@@ -51,10 +53,11 @@ func (s *ScanResultController) CreateScanResult(c *gin.Context) {
 // @Router /v1/scan-results [get]
 func (s *ScanResultController) GetScanResultList(c *gin.Context) {
 	var getScanResultListDto dtos.GetScanResultListDto
-	err := c.ShouldBindQuery(getScanResultListDto)
+	err := c.ShouldBindQuery(&getScanResultListDto)
 	if err != nil {
 
 	}
+	log.Println(getScanResultListDto.Limit, getScanResultListDto.Offset)
 	s.scanResultService.GetScanResultList(c, getScanResultListDto)
 }
 
@@ -69,7 +72,7 @@ func (s *ScanResultController) GetScanResultList(c *gin.Context) {
 // @Router /v1/scan-results/:id [get]
 func (s *ScanResultController) GetScanResultDetail(c *gin.Context) {
 	var getScanResultDetailDto dtos.GetScanResultDetailDto
-	err := c.ShouldBindQuery(getScanResultDetailDto)
+	err := c.ShouldBindQuery(&getScanResultDetailDto)
 	if err != nil {
 
 	}
@@ -87,7 +90,7 @@ func (s *ScanResultController) GetScanResultDetail(c *gin.Context) {
 // @Router /v1/scan-results [patch]
 func (s *ScanResultController) UpdateScanResult(c *gin.Context) {
 	var updateScanResultDto dtos.UpdateScanResultDto
-	err := c.ShouldBindJSON(updateScanResultDto)
+	err := c.ShouldBindJSON(&updateScanResultDto)
 	if err != nil {
 
 	}
@@ -105,7 +108,7 @@ func (s *ScanResultController) UpdateScanResult(c *gin.Context) {
 // @Router /v1/scan-results/:id [delete]
 func (s *ScanResultController) DeleteScanResult(c *gin.Context) {
 	var deleteScanResultDto dtos.DeleteScanResultDto
-	err := c.ShouldBindUri(deleteScanResultDto)
+	err := c.ShouldBindUri(&deleteScanResultDto)
 	if err != nil {
 
 	}

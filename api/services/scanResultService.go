@@ -39,14 +39,22 @@ func (s *ScanResultService) CreateScanResult(ctx context.Context, createScanResu
 }
 
 func (s *ScanResultService) GetScanResultDetail(ctx context.Context, getScanResultDetailDto dtos.GetScanResultDetailDto) {
-	condition := map[string]interface{}{
-		"id": getScanResultDetailDto.ID,
-	}
-	scanResult, err := s.scanResultRepository.FindOne(ctx, condition)
+	scanResult, err := s.GetScanResultDetailById(ctx, getScanResultDetailDto.ID)
 	if err != nil {
 
 	}
 	log.Println(scanResult)
+}
+
+func (s *ScanResultService) GetScanResultDetailById(ctx context.Context, id int) (entities.Result, error) {
+	condition := map[string]interface{}{
+		"id": id,
+	}
+	scanResult, err := s.scanResultRepository.FindOne(ctx, condition)
+	if err != nil {
+		return scanResult, err
+	}
+	return scanResult, nil
 }
 
 func (s *ScanResultService) GetScanResultList(ctx context.Context, getScanResultListDto dtos.GetScanResultListDto) {
