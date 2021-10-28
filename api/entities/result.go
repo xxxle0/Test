@@ -10,8 +10,8 @@ type Result struct {
 	gorm.Model
 	RepositoryName string
 	Status         uint8
-	// Findings       interface{}
-	QueuedAt   time.Time
-	ScanningAt time.Time
-	FinishedAt time.Time
+	Findings       []Finding `gorm:"foreignKey:ResultId"`
+	QueuedAt       time.Time
+	ScanningAt     time.Time
+	FinishedAt     time.Time
 }

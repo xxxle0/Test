@@ -2,11 +2,13 @@ package services
 
 import (
 	"context"
-	"log"
+	"encoding/json"
 
+	"github.com/duybkit13/api/adapters"
 	"github.com/duybkit13/api/dtos"
 	"github.com/duybkit13/api/entities"
 	"github.com/duybkit13/api/repositories"
+	"gorm.io/datatypes"
 )
 
 type ScanResultServiceI interface {
@@ -28,28 +30,43 @@ func InitScanResultService(scanResultRepository repositories.ScanResultRepositor
 }
 
 func (s *ScanResultService) CreateScanResult(ctx context.Context, createScanResultDto dtos.CreateScanResultDto) error {
+	findings := make([]entities.Finding, len(createScanResultDto.Findings))
+	for i, v := range createScanResultDto.Findings {
+		locationByteSlice, err := json.Marshal(v.Location)
+		if err != nil {
+			return err
+		}
+		metadataByteSlice, err := json.Marshal(v.Metadata)
+		if err != nil {
+			return err
+		}
+		findings[i] = entities.Finding{
+			Type:     v.Type,
+			RuleID:   v.RuleID,
+			Location: datatypes.JSON(locationByteSlice),
+			Metadata: datatypes.JSON(metadataByteSlice),
+		}
+	}
 	scanResult := entities.Result{
 		Status:         createScanResultDto.Status,
 		RepositoryName: createScanResultDto.RepositoryName,
 		ScanningAt:     createScanResultDto.ScanningAt,
 		QueuedAt:       createScanResultDto.QueuedAt,
 		FinishedAt:     createScanResultDto.FinishedAt,
+		Findings:       findings,
 	}
-	err := s.scanResultRepository.Create(ctx, scanResult)
+	_, err := s.scanResultRepository.Create(ctx, scanResult)
 	return err
 }
 
 func (s *ScanResultService) GetScanResultDetail(ctx context.Context, getScanResultDetailDto dtos.GetScanResultDetailDto) (dtos.GetScanResultDetailResp, error) {
-	var scanResultResp dtos.ScanResultResp
 	scanResult, err := s.GetScanResultDetailById(ctx, getScanResultDetailDto.ID)
 	if err != nil {
 		return dtos.GetScanResultDetailResp{}, err
 	}
-	scanResultResp = dtos.ScanResultResp{
-		ScanningAt:     scanResult.ScanningAt,
-		Status:         scanResult.Status,
-		RepositoryName: scanResult.RepositoryName,
-		QueuedAt:       scanResult.QueuedAt,
+	scanResultResp, err := adapters.ScanResultRespAdapter(scanResult)
+	if err != nil {
+		return dtos.GetScanResultDetailResp{}, err
 	}
 	getScanResultResp := dtos.GetScanResultDetailResp{
 		ScanResult: scanResultResp,
@@ -72,12 +89,20 @@ func (s *ScanResultService) GetScanResultList(ctx context.Context, getScanResult
 	condition := map[string]interface{}{}
 	count := s.scanResultRepository.Count(ctx, condition)
 	scanResults, err := s.scanResultRepository.FindMany(ctx, condition)
-	log.Println(scanResults)
 	if err != nil {
 		return dtos.GetScanResultListResp{}, err
 	}
+	scanResultListResp := make([]dtos.ScanResultResp, count)
+	for i, scanResult := range scanResults {
+		scanResultResp, err := adapters.ScanResultRespAdapter(scanResult)
+		if err != nil {
+			return dtos.GetScanResultListResp{}, err
+		}
+		scanResultListResp[i] = scanResultResp
+	}
 	getScanResultListResp := dtos.GetScanResultListResp{
-		Total: count,
+		Total:       count,
+		ScanResults: scanResultListResp,
 	}
 	return getScanResultListResp, nil
 }

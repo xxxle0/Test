@@ -1,14 +1,16 @@
 package dtos
 
-import "time"
+import (
+	"time"
+)
 
 type CreateScanResultDto struct {
-	Status         uint8       `json:"status"`
-	RepositoryName string      `json:"repository_name"`
-	Findings       interface{} `json:"findings"`
-	QueuedAt       time.Time   `json:"queued_at"`
-	ScanningAt     time.Time   `json:"scanning_at"`
-	FinishedAt     time.Time   `json:"finished_at"`
+	Status         uint8        `json:"status"`
+	RepositoryName string       `json:"repository_name"`
+	Findings       []FindingDto `json:"findings"`
+	QueuedAt       time.Time    `json:"queued_at"`
+	ScanningAt     time.Time    `json:"scanning_at"`
+	FinishedAt     time.Time    `json:"finished_at"`
 }
 
 type GetScanResultDetailDto struct {
@@ -25,10 +27,10 @@ type DeleteScanResultDto struct {
 }
 
 type UpdateScanResultDto struct {
-	ID             int         `uri:"id"`
-	Status         int         `json:"status"`
-	RepositoryName string      `json:"repository_name"`
-	Findings       interface{} `json:"findings"`
+	ID             int          `uri:"id"`
+	Status         int          `json:"status"`
+	RepositoryName string       `json:"repository_name"`
+	Findings       []FindingDto `json:"findings"`
 }
 
 type CreateScanResultResp struct {
@@ -36,12 +38,13 @@ type CreateScanResultResp struct {
 }
 
 type ScanResultResp struct {
-	Status         uint8       `json:"status" example:"1"`
-	RepositoryName string      `json:"repository_name"  example:"test"`
-	Findings       interface{} `json:"findings"`
-	QueuedAt       time.Time   `json:"queued_at"`
-	ScanningAt     time.Time   `json:"scanning_at"`
-	FinishedAt     time.Time   `json:"finished_at"`
+	ID             uint         `json:"id"`
+	Status         uint8        `json:"status"`
+	RepositoryName string       `json:"repository_name"`
+	Findings       []FindingDto `json:"findings,omitempty"`
+	QueuedAt       time.Time    `json:"queued_at"`
+	ScanningAt     time.Time    `json:"scanning_at"`
+	FinishedAt     time.Time    `json:"finished_at"`
 }
 
 type GetScanResultDetailResp struct {
@@ -49,8 +52,8 @@ type GetScanResultDetailResp struct {
 }
 
 type GetScanResultListResp struct {
-	ScanResults []ScanResultResp `json:"scan_results"`
-	Total       int64            `json:"total"`
+	ScanResults []ScanResultResp `json:"scan_results,omitempty"`
+	Total       int64            `json:"total,omitempty"`
 }
 
 type DeleteScanResultResp struct {

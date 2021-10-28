@@ -1,24 +1,15 @@
 package entities
 
+import (
+	"gorm.io/datatypes"
+	"gorm.io/gorm"
+)
+
 type Finding struct {
-	Type     int
-	RuleID   int
-	Location FindingLocation
-	Metadata Metadata
-}
-
-type FindingLocation struct {
-	Path      string
-	Positions FindingPosition
-}
-
-type Metadata struct {
-	Description string
-	Severity    string
-}
-
-type FindingPosition struct {
-	Begin struct {
-		Line string
-	}
+	gorm.Model
+	Type     string
+	RuleID   string
+	ResultId uint
+	Location datatypes.JSON
+	Metadata datatypes.JSON
 }

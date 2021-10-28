@@ -2,14 +2,13 @@ package repositories
 
 import (
 	"context"
-	"log"
 
 	"github.com/duybkit13/api/entities"
 	"gorm.io/gorm"
 )
 
 type ScanResultRepositoryI interface {
-	Create(ctx context.Context, scanResult entities.Result) error
+	Create(ctx context.Context, scanResult entities.Result) (entities.Result, error)
 	FindOne(ctx context.Context, condition map[string]interface{}) (entities.Result, error)
 	FindMany(ctx context.Context, condition map[string]interface{}) ([]entities.Result, error)
 	Delete(ctx context.Context, condition map[string]interface{}) error
@@ -27,15 +26,14 @@ func InitScanResultRepository(dbClient *gorm.DB) ScanResultRepositoryI {
 	}
 }
 
-func (r *ScanResultRepository) Create(ctx context.Context, scanResult entities.Result) error {
+func (r *ScanResultRepository) Create(ctx context.Context, scanResult entities.Result) (entities.Result, error) {
 	result := r.dbClient.Model(&entities.Result{}).WithContext(ctx).Create(&scanResult)
-	return result.Error
+	return scanResult, result.Error
 }
 
 func (r *ScanResultRepository) FindOne(ctx context.Context, condition map[string]interface{}) (entities.Result, error) {
 	var scanResult entities.Result
-	log.Println(condition)
-	result := r.dbClient.Model(&entities.Result{}).Where(condition).First(&scanResult)
+	result := r.dbClient.Model(&entities.Result{}).Preload("Findings").First(&scanResult, condition)
 	if result.Error != nil {
 		return scanResult, result.Error
 	}
@@ -44,7 +42,7 @@ func (r *ScanResultRepository) FindOne(ctx context.Context, condition map[string
 
 func (r *ScanResultRepository) FindMany(ctx context.Context, condition map[string]interface{}) ([]entities.Result, error) {
 	var scanResults []entities.Result
-	result := r.dbClient.Model(&entities.Result{}).Where(condition).Find(&scanResults).Limit(20).Offset(0)
+	result := r.dbClient.Model(&entities.Result{}).Preload("Findings").Find(&scanResults, condition).Limit(20).Offset(0)
 	if result.Error != nil {
 		return scanResults, result.Error
 	}
