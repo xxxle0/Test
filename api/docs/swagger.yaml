@@ -1,4 +1,21 @@
 definitions:
+  dtos.CreateScanResultDto:
+    properties:
+      findings:
+        items:
+          $ref: '#/definitions/dtos.FindingDto'
+        type: array
+      finished_at:
+        type: string
+      queued_at:
+        type: string
+      repository_name:
+        type: string
+      scanning_at:
+        type: string
+      status:
+        type: string
+    type: object
   dtos.CreateScanResultResp:
     properties:
       message:
@@ -7,6 +24,19 @@ definitions:
   dtos.DeleteScanResultResp:
     properties:
       message:
+        type: string
+    type: object
+  dtos.FindingDto:
+    properties:
+      location:
+        additionalProperties: true
+        type: object
+      metadata:
+        additionalProperties: true
+        type: object
+      ruleId:
+        type: string
+      type:
         type: string
     type: object
   dtos.GetScanResultDetailResp:
@@ -25,19 +55,35 @@ definitions:
     type: object
   dtos.ScanResultResp:
     properties:
-      findings: {}
+      findings:
+        items:
+          $ref: '#/definitions/dtos.FindingDto'
+        type: array
       finished_at:
         type: string
+      id:
+        type: integer
       queued_at:
         type: string
       repository_name:
-        example: test
         type: string
       scanning_at:
         type: string
       status:
-        example: 1
+        type: string
+    type: object
+  dtos.UpdateScanResultDto:
+    properties:
+      findings:
+        items:
+          $ref: '#/definitions/dtos.FindingDto'
+        type: array
+      id:
         type: integer
+      repository_name:
+        type: string
+      status:
+        type: string
     type: object
   dtos.UpdateScanResultResp:
     properties:
@@ -76,11 +122,12 @@ paths:
       - application/json
       description: Create Scan Result With ScanResult Payload
       parameters:
-      - description: Limit
+      - description: The Request Payload to create Scan Result
         in: body
-        name: limit
+        name: RequestPayload
+        required: true
         schema:
-          type: integer
+          $ref: '#/definitions/dtos.CreateScanResultDto'
       produces:
       - application/json
       responses:
@@ -137,6 +184,12 @@ paths:
       - application/json
       description: Update Scan Result
       parameters:
+      - description: The Request Payload to update Scan Result
+        in: body
+        name: RequestPayload
+        required: true
+        schema:
+          $ref: '#/definitions/dtos.UpdateScanResultDto'
       - description: Scan Result ID
         in: path
         name: id

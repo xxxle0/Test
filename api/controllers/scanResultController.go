@@ -32,7 +32,7 @@ func ScanResultInit(scanResultService services.ScanResultServiceI) ScanResultCon
 // @Description Create Scan Result With ScanResult Payload
 // @Accept  json
 // @Produce  json
-// @Param limit body int false "Limit"
+// @Param  RequestPayload body dtos.CreateScanResultDto true "The Request Payload to create Scan Result"
 // @Success 200 {object} dtos.CreateScanResultResp
 // @Router /v1/scan-results [post]
 func (s *ScanResultController) CreateScanResult(c *gin.Context) {
@@ -141,6 +141,7 @@ func (s *ScanResultController) GetScanResultDetail(c *gin.Context) {
 // @Description Update Scan Result
 // @Accept  json
 // @Produce  json
+// @Param  RequestPayload body dtos.UpdateScanResultDto true "The Request Payload to update Scan Result"
 // @Param id path int true "Scan Result ID"
 // @Success 200 {object} dtos.UpdateScanResultResp
 // @Router /v1/scan-results/{id} [patch]

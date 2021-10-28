@@ -73,11 +73,12 @@ var doc = `{
                 "summary": "Create Scan Result",
                 "parameters": [
                     {
-                        "description": "Limit",
-                        "name": "limit",
+                        "description": "The Request Payload to create Scan Result",
+                        "name": "RequestPayload",
                         "in": "body",
+                        "required": true,
                         "schema": {
-                            "type": "integer"
+                            "$ref": "#/definitions/dtos.CreateScanResultDto"
                         }
                     }
                 ],
@@ -166,6 +167,15 @@ var doc = `{
                 "summary": "Update Scan Result",
                 "parameters": [
                     {
+                        "description": "The Request Payload to update Scan Result",
+                        "name": "RequestPayload",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dtos.UpdateScanResultDto"
+                        }
+                    },
+                    {
                         "type": "integer",
                         "description": "Scan Result ID",
                         "name": "id",
@@ -185,6 +195,32 @@ var doc = `{
         }
     },
     "definitions": {
+        "dtos.CreateScanResultDto": {
+            "type": "object",
+            "properties": {
+                "findings": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/dtos.FindingDto"
+                    }
+                },
+                "finished_at": {
+                    "type": "string"
+                },
+                "queued_at": {
+                    "type": "string"
+                },
+                "repository_name": {
+                    "type": "string"
+                },
+                "scanning_at": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                }
+            }
+        },
         "dtos.CreateScanResultResp": {
             "type": "object",
             "properties": {
@@ -197,6 +233,25 @@ var doc = `{
             "type": "object",
             "properties": {
                 "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "dtos.FindingDto": {
+            "type": "object",
+            "properties": {
+                "location": {
+                    "type": "object",
+                    "additionalProperties": true
+                },
+                "metadata": {
+                    "type": "object",
+                    "additionalProperties": true
+                },
+                "ruleId": {
+                    "type": "string"
+                },
+                "type": {
                     "type": "string"
                 }
             }
@@ -226,23 +281,49 @@ var doc = `{
         "dtos.ScanResultResp": {
             "type": "object",
             "properties": {
-                "findings": {},
+                "findings": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/dtos.FindingDto"
+                    }
+                },
                 "finished_at": {
                     "type": "string"
+                },
+                "id": {
+                    "type": "integer"
                 },
                 "queued_at": {
                     "type": "string"
                 },
                 "repository_name": {
-                    "type": "string",
-                    "example": "test"
+                    "type": "string"
                 },
                 "scanning_at": {
                     "type": "string"
                 },
                 "status": {
-                    "type": "integer",
-                    "example": 1
+                    "type": "string"
+                }
+            }
+        },
+        "dtos.UpdateScanResultDto": {
+            "type": "object",
+            "properties": {
+                "findings": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/dtos.FindingDto"
+                    }
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "repository_name": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
                 }
             }
         },
