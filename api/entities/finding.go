@@ -9,7 +9,7 @@ type Finding struct {
 	gorm.Model
 	Type     string
 	RuleID   string
-	ResultId uint
+	ResultId uint `gorm:"index"`
 	Location datatypes.JSON
 	Metadata datatypes.JSON
 }
