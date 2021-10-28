@@ -10,7 +10,9 @@ The RESTful API to CRUD a Security Scan Result (“Result”) written by Go. The
 - FinishedAt: timestamp
 ## Diagrams
 ### General Architect
+![General Architect](https://github.com/xxxle0/guardrails-test/blob/master/General%20Architect.png?raw=true)
 ### ERD
+![ERD](https://github.com/xxxle0/guardrails-test/blob/master/ERD.png?raw=true)
 ## Project Structures
 ```
 /adapters
