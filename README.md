@@ -11,6 +11,21 @@ The RESTful API to CRUD a Security Scan Result (“Result”) written by Go. The
 ## Diagrams
 ### General Architect
 ### ERD
+## Project Structures
+```
+/adapters
+/configurations
+/controllers
+/databases
+/deployments
+/docs
+/documentations
+/dtos
+/entities
+/repositories
+/routes
+/services
+```
 ## Technology Stack
 1. Go Gin (Web server framework)
 2. Gorm (ORM package)
@@ -28,8 +43,3 @@ make swagger-migrate // Update api documentation
 make build // Build docker image
 make run // Run Go Project
 ```
-
-# DASHBOARD
-## Introduction
-## General Architect
-## Tech
