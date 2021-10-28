@@ -9,7 +9,7 @@ import (
 type Result struct {
 	gorm.Model
 	RepositoryName string
-	Status         uint8
+	Status         string
 	Findings       []Finding `gorm:"foreignKey:ResultId"`
 	QueuedAt       time.Time
 	ScanningAt     time.Time

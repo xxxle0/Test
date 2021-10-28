@@ -46,7 +46,7 @@ func (s *ScanResultController) CreateScanResult(c *gin.Context) {
 		dtos.BadRequest(c, response)
 		return
 	}
-	err = s.scanResultService.CreateScanResult(c, createScanResultDto)
+	createScanResultResp, err := s.scanResultService.CreateScanResult(c, createScanResultDto)
 	if err != nil {
 		response := dtos.Response{
 			StatusCode: http.StatusInternalServerError,
@@ -57,7 +57,7 @@ func (s *ScanResultController) CreateScanResult(c *gin.Context) {
 	}
 	response := dtos.Response{
 		StatusCode: http.StatusOK,
-		Message:    "Create Scan Result Success",
+		Message:    createScanResultResp.Message,
 	}
 	dtos.HttpResponse(c, response)
 }
@@ -164,7 +164,7 @@ func (s *ScanResultController) UpdateScanResult(c *gin.Context) {
 		dtos.BadRequest(c, response)
 		return
 	}
-	err = s.scanResultService.UpdateScanResult(c, updateScanResultDto)
+	updateScanResultResp, err := s.scanResultService.UpdateScanResult(c, updateScanResultDto)
 	if err != nil {
 		response := dtos.Response{
 			StatusCode: http.StatusInternalServerError,
@@ -175,7 +175,7 @@ func (s *ScanResultController) UpdateScanResult(c *gin.Context) {
 	}
 	response := dtos.Response{
 		StatusCode: http.StatusOK,
-		Message:    "Update Scan Result Success",
+		Message:    updateScanResultResp.Message,
 	}
 	dtos.HttpResponse(c, response)
 }
@@ -200,7 +200,7 @@ func (s *ScanResultController) DeleteScanResult(c *gin.Context) {
 		dtos.BadRequest(c, response)
 		return
 	}
-	err = s.scanResultService.DeleteScanResult(c, deleteScanResultDto)
+	deleteScanResultResp, err := s.scanResultService.DeleteScanResult(c, deleteScanResultDto)
 	if err != nil {
 		response := dtos.Response{
 			StatusCode: http.StatusInternalServerError,
@@ -211,7 +211,7 @@ func (s *ScanResultController) DeleteScanResult(c *gin.Context) {
 	}
 	response := dtos.Response{
 		StatusCode: http.StatusOK,
-		Message:    "Delete Scan Result Success",
+		Message:    deleteScanResultResp.Message,
 	}
 	dtos.HttpResponse(c, response)
 }

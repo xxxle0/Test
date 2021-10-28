@@ -5,7 +5,7 @@ import (
 )
 
 type CreateScanResultDto struct {
-	Status         uint8        `json:"status"`
+	Status         string       `json:"status"`
 	RepositoryName string       `json:"repository_name"`
 	Findings       []FindingDto `json:"findings"`
 	QueuedAt       time.Time    `json:"queued_at"`
@@ -28,7 +28,7 @@ type DeleteScanResultDto struct {
 
 type UpdateScanResultDto struct {
 	ID             int          `uri:"id"`
-	Status         int          `json:"status"`
+	Status         string       `json:"status"`
 	RepositoryName string       `json:"repository_name"`
 	Findings       []FindingDto `json:"findings"`
 }
@@ -39,7 +39,7 @@ type CreateScanResultResp struct {
 
 type ScanResultResp struct {
 	ID             uint         `json:"id"`
-	Status         uint8        `json:"status"`
+	Status         string       `json:"status"`
 	RepositoryName string       `json:"repository_name"`
 	Findings       []FindingDto `json:"findings,omitempty"`
 	QueuedAt       time.Time    `json:"queued_at"`
