@@ -1,6 +1,6 @@
 run:
 	@echo "======= Backend's Running ======="
-	@go run main.go
+	go run main.go
 
 build:
 	@echo "======= Build Docker Image ======="
@@ -8,4 +8,7 @@ build:
 
 swagger-migrate:
 	@echo "======= Swagger Migrate ======="
-	@swag init
+	swag init
+
+test:
+	go test ./...
