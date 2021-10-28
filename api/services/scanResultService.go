@@ -2,13 +2,11 @@ package services
 
 import (
 	"context"
-	"encoding/json"
 
 	"github.com/duybkit13/api/adapters"
 	"github.com/duybkit13/api/dtos"
 	"github.com/duybkit13/api/entities"
 	"github.com/duybkit13/api/repositories"
-	"gorm.io/datatypes"
 )
 
 type ScanResultServiceI interface {
@@ -30,32 +28,11 @@ func InitScanResultService(scanResultRepository repositories.ScanResultRepositor
 }
 
 func (s *ScanResultService) CreateScanResult(ctx context.Context, createScanResultDto dtos.CreateScanResultDto) error {
-	findings := make([]entities.Finding, len(createScanResultDto.Findings))
-	for i, v := range createScanResultDto.Findings {
-		locationByteSlice, err := json.Marshal(v.Location)
-		if err != nil {
-			return err
-		}
-		metadataByteSlice, err := json.Marshal(v.Metadata)
-		if err != nil {
-			return err
-		}
-		findings[i] = entities.Finding{
-			Type:     v.Type,
-			RuleID:   v.RuleID,
-			Location: datatypes.JSON(locationByteSlice),
-			Metadata: datatypes.JSON(metadataByteSlice),
-		}
+	scanResult, err := adapters.ScanResultAdapter(createScanResultDto)
+	if err != nil {
+		return err
 	}
-	scanResult := entities.Result{
-		Status:         createScanResultDto.Status,
-		RepositoryName: createScanResultDto.RepositoryName,
-		ScanningAt:     createScanResultDto.ScanningAt,
-		QueuedAt:       createScanResultDto.QueuedAt,
-		FinishedAt:     createScanResultDto.FinishedAt,
-		Findings:       findings,
-	}
-	_, err := s.scanResultRepository.Create(ctx, scanResult)
+	_, err = s.scanResultRepository.Create(ctx, scanResult)
 	return err
 }
 
@@ -88,11 +65,11 @@ func (s *ScanResultService) GetScanResultDetailById(ctx context.Context, id int)
 func (s *ScanResultService) GetScanResultList(ctx context.Context, getScanResultListDto dtos.GetScanResultListDto) (dtos.GetScanResultListResp, error) {
 	condition := map[string]interface{}{}
 	count := s.scanResultRepository.Count(ctx, condition)
-	scanResults, err := s.scanResultRepository.FindMany(ctx, condition)
+	scanResults, err := s.scanResultRepository.FindMany(ctx, condition, getScanResultListDto.Limit, getScanResultListDto.Offset)
 	if err != nil {
 		return dtos.GetScanResultListResp{}, err
 	}
-	scanResultListResp := make([]dtos.ScanResultResp, count)
+	scanResultListResp := make([]dtos.ScanResultResp, len(scanResults))
 	for i, scanResult := range scanResults {
 		scanResultResp, err := adapters.ScanResultRespAdapter(scanResult)
 		if err != nil {

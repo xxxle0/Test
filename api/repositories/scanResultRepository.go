@@ -10,7 +10,7 @@ import (
 type ScanResultRepositoryI interface {
 	Create(ctx context.Context, scanResult entities.Result) (entities.Result, error)
 	FindOne(ctx context.Context, condition map[string]interface{}) (entities.Result, error)
-	FindMany(ctx context.Context, condition map[string]interface{}) ([]entities.Result, error)
+	FindMany(ctx context.Context, condition map[string]interface{}, limit, offset int) ([]entities.Result, error)
 	Delete(ctx context.Context, condition map[string]interface{}) error
 	Update(ctx context.Context, condition map[string]interface{}, newPayload entities.Result) error
 	Count(ctx context.Context, condition map[string]interface{}) int64
@@ -40,11 +40,18 @@ func (r *ScanResultRepository) FindOne(ctx context.Context, condition map[string
 	return scanResult, nil
 }
 
-func (r *ScanResultRepository) FindMany(ctx context.Context, condition map[string]interface{}) ([]entities.Result, error) {
+func (r *ScanResultRepository) FindMany(ctx context.Context, condition map[string]interface{}, limit, offset int) ([]entities.Result, error) {
 	var scanResults []entities.Result
-	result := r.dbClient.Model(&entities.Result{}).Preload("Findings").Find(&scanResults, condition).Limit(20).Offset(0)
-	if result.Error != nil {
-		return scanResults, result.Error
+	if limit != 0 {
+		result := r.dbClient.Model(&entities.Result{}).Preload("Findings").Limit(limit).Offset(offset).Find(&scanResults, condition)
+		if result.Error != nil {
+			return scanResults, result.Error
+		}
+	} else {
+		result := r.dbClient.Model(&entities.Result{}).Preload("Findings").Find(&scanResults, condition)
+		if result.Error != nil {
+			return scanResults, result.Error
+		}
 	}
 	return scanResults, nil
 }

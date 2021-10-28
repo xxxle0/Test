@@ -5,6 +5,7 @@ import (
 
 	"github.com/duybkit13/api/dtos"
 	"github.com/duybkit13/api/entities"
+	"gorm.io/datatypes"
 )
 
 func ScanResultRespAdapter(scanResult entities.Result) (dtos.ScanResultResp, error) {
@@ -34,6 +35,7 @@ func ScanResultRespAdapter(scanResult entities.Result) (dtos.ScanResultResp, err
 		scanResultFindingResp[i].Location = location
 		scanResultFindingResp[i].Metadata = metadata
 	}
+	scanResultResp.ID = scanResult.ID
 	scanResultResp.Status = scanResult.Status
 	scanResultResp.QueuedAt = scanResult.QueuedAt
 	scanResultResp.ScanningAt = scanResult.ScanningAt
@@ -41,4 +43,33 @@ func ScanResultRespAdapter(scanResult entities.Result) (dtos.ScanResultResp, err
 	scanResultResp.RepositoryName = scanResult.RepositoryName
 	scanResultResp.Findings = scanResultFindingResp
 	return scanResultResp, nil
+}
+
+func ScanResultAdapter(scanResultDto dtos.CreateScanResultDto) (entities.Result, error) {
+	findings := make([]entities.Finding, len(scanResultDto.Findings))
+	for i, v := range scanResultDto.Findings {
+		locationByteSlice, err := json.Marshal(v.Location)
+		if err != nil {
+			return entities.Result{}, err
+		}
+		metadataByteSlice, err := json.Marshal(v.Metadata)
+		if err != nil {
+			return entities.Result{}, err
+		}
+		findings[i] = entities.Finding{
+			Type:     v.Type,
+			RuleID:   v.RuleID,
+			Location: datatypes.JSON(locationByteSlice),
+			Metadata: datatypes.JSON(metadataByteSlice),
+		}
+	}
+	scanResult := entities.Result{
+		Status:         scanResultDto.Status,
+		RepositoryName: scanResultDto.RepositoryName,
+		ScanningAt:     scanResultDto.ScanningAt,
+		QueuedAt:       scanResultDto.QueuedAt,
+		FinishedAt:     scanResultDto.FinishedAt,
+		Findings:       findings,
+	}
+	return scanResult, nil
 }
