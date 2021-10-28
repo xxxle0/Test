@@ -32,6 +32,8 @@ func ScanResultInit(scanResultService services.ScanResultServiceI) ScanResultCon
 // @Description Create Scan Result With ScanResult Payload
 // @Accept  json
 // @Produce  json
+// @Param limit body int false "Limit"
+// @Success 200 {object} dtos.CreateScanResultResp
 // @Router /v1/scan-results [post]
 func (s *ScanResultController) CreateScanResult(c *gin.Context) {
 	var createScanResultDto dtos.CreateScanResultDto
@@ -66,6 +68,9 @@ func (s *ScanResultController) CreateScanResult(c *gin.Context) {
 // @Description Get Scan Result List with Offset & Payload
 // @Accept  json
 // @Produce  json
+// @Param limit query int false "Limit"
+// @Param offset query int false "Offset"
+// @Success 200 {object} dtos.GetScanResultListResp
 // @Router /v1/scan-results [get]
 func (s *ScanResultController) GetScanResultList(c *gin.Context) {
 	var getScanResultListDto dtos.GetScanResultListDto
@@ -101,7 +106,8 @@ func (s *ScanResultController) GetScanResultList(c *gin.Context) {
 // @Accept  json
 // @Produce  json
 // @Param id path int true "Scan Result ID"
-// @Router /v1/scan-results/:id [get]
+// @Success 200 {object} dtos.GetScanResultDetailResp
+// @Router /v1/scan-results/{id} [get]
 func (s *ScanResultController) GetScanResultDetail(c *gin.Context) {
 	var getScanResultDetailDto dtos.GetScanResultDetailDto
 	err := c.ShouldBindUri(&getScanResultDetailDto)
@@ -136,10 +142,20 @@ func (s *ScanResultController) GetScanResultDetail(c *gin.Context) {
 // @Accept  json
 // @Produce  json
 // @Param id path int true "Scan Result ID"
-// @Router /v1/scan-results [patch]
+// @Success 200 {object} dtos.UpdateScanResultResp
+// @Router /v1/scan-results/{id} [patch]
 func (s *ScanResultController) UpdateScanResult(c *gin.Context) {
 	var updateScanResultDto dtos.UpdateScanResultDto
-	err := c.ShouldBindJSON(&updateScanResultDto)
+	err := c.ShouldBindUri(&updateScanResultDto)
+	if err != nil {
+		response := dtos.Response{
+			StatusCode: http.StatusBadRequest,
+			ErrorMsg:   err.Error(),
+		}
+		dtos.BadRequest(c, response)
+		return
+	}
+	err = c.ShouldBindJSON(&updateScanResultDto)
 	if err != nil {
 		response := dtos.Response{
 			StatusCode: http.StatusBadRequest,
@@ -171,7 +187,8 @@ func (s *ScanResultController) UpdateScanResult(c *gin.Context) {
 // @Accept  json
 // @Produce  json
 // @Param id path int true "Scan Result ID"
-// @Router /v1/scan-results/:id [delete]
+// @Success 200 {object} dtos.DeleteScanResultResp
+// @Router /v1/scan-results/{id} [delete]
 func (s *ScanResultController) DeleteScanResult(c *gin.Context) {
 	var deleteScanResultDto dtos.DeleteScanResultDto
 	err := c.ShouldBindUri(&deleteScanResultDto)

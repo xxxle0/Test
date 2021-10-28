@@ -1,3 +1,49 @@
+definitions:
+  dtos.CreateScanResultResp:
+    properties:
+      message:
+        type: string
+    type: object
+  dtos.DeleteScanResultResp:
+    properties:
+      message:
+        type: string
+    type: object
+  dtos.GetScanResultDetailResp:
+    properties:
+      scan_result:
+        $ref: '#/definitions/dtos.ScanResultResp'
+    type: object
+  dtos.GetScanResultListResp:
+    properties:
+      scan_results:
+        items:
+          $ref: '#/definitions/dtos.ScanResultResp'
+        type: array
+      total:
+        type: integer
+    type: object
+  dtos.ScanResultResp:
+    properties:
+      findings: {}
+      finished_at:
+        type: string
+      queued_at:
+        type: string
+      repository_name:
+        example: test
+        type: string
+      scanning_at:
+        type: string
+      status:
+        example: 1
+        type: integer
+    type: object
+  dtos.UpdateScanResultResp:
+    properties:
+      message:
+        type: string
+    type: object
 info:
   contact: {}
 paths:
@@ -6,36 +52,46 @@ paths:
       consumes:
       - application/json
       description: Get Scan Result List with Offset & Payload
-      produces:
-      - application/json
-      summary: Get Scan Result List
-      tags:
-      - Scan Results
-    patch:
-      consumes:
-      - application/json
-      description: Update Scan Result
       parameters:
-      - description: Scan Result ID
-        in: path
-        name: id
-        required: true
+      - description: Limit
+        in: query
+        name: limit
+        type: integer
+      - description: Offset
+        in: query
+        name: offset
         type: integer
       produces:
       - application/json
-      summary: Update Scan Result
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.GetScanResultListResp'
+      summary: Get Scan Result List
       tags:
       - Scan Results
     post:
       consumes:
       - application/json
       description: Create Scan Result With ScanResult Payload
+      parameters:
+      - description: Limit
+        in: body
+        name: limit
+        schema:
+          type: integer
       produces:
       - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.CreateScanResultResp'
       summary: Create Scan Result
       tags:
       - Scan Results
-  /v1/scan-results/:id:
+  /v1/scan-results/{id}:
     delete:
       consumes:
       - application/json
@@ -48,6 +104,11 @@ paths:
         type: integer
       produces:
       - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.DeleteScanResultResp'
       summary: Delete Scan Result
       tags:
       - Scan Results
@@ -63,7 +124,32 @@ paths:
         type: integer
       produces:
       - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.GetScanResultDetailResp'
       summary: Get Scan Result Detail
+      tags:
+      - Scan Results
+    patch:
+      consumes:
+      - application/json
+      description: Update Scan Result
+      parameters:
+      - description: Scan Result ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.UpdateScanResultResp'
+      summary: Update Scan Result
       tags:
       - Scan Results
 swagger: "2.0"
