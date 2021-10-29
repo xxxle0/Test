@@ -11,4 +11,4 @@ swagger-migrate:
 	swag init
 
 test:
-	go test ./...
+	go test ./... -v
