@@ -8,7 +8,7 @@ import (
 )
 
 type ScanResultRepositoryI interface {
-	Create(ctx context.Context, scanResult entities.Result) (entities.Result, error)
+	Create(ctx context.Context, scanResult entities.Result) error
 	FindOne(ctx context.Context, condition map[string]interface{}) (entities.Result, error)
 	FindMany(ctx context.Context, condition map[string]interface{}, limit, offset int) ([]entities.Result, error)
 	Delete(ctx context.Context, condition map[string]interface{}) error
@@ -26,9 +26,9 @@ func InitScanResultRepository(dbClient *gorm.DB) ScanResultRepositoryI {
 	}
 }
 
-func (r *ScanResultRepository) Create(ctx context.Context, scanResult entities.Result) (entities.Result, error) {
+func (r *ScanResultRepository) Create(ctx context.Context, scanResult entities.Result) error {
 	result := r.dbClient.Model(&entities.Result{}).WithContext(ctx).Create(&scanResult)
-	return scanResult, result.Error
+	return result.Error
 }
 
 func (r *ScanResultRepository) FindOne(ctx context.Context, condition map[string]interface{}) (entities.Result, error) {

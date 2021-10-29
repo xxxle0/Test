@@ -32,7 +32,7 @@ func (s *ScanResultService) CreateScanResult(ctx context.Context, createScanResu
 	if err != nil {
 		return dtos.CreateScanResultResp{}, err
 	}
-	_, err = s.scanResultRepository.Create(ctx, scanResult)
+	err = s.scanResultRepository.Create(ctx, scanResult)
 	if err != nil {
 		return dtos.CreateScanResultResp{}, err
 	}
