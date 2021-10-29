@@ -37,7 +37,7 @@ func (s *ScanResultService) CreateScanResult(ctx context.Context, createScanResu
 		return dtos.CreateScanResultResp{}, err
 	}
 	return dtos.CreateScanResultResp{
-		Message: "create Scan Result Success",
+		Message: "Create Scan Result Success",
 	}, nil
 }
 
