@@ -43,14 +43,14 @@ func (s *ScanResultController) CreateScanResult(c *gin.Context) {
 			StatusCode: http.StatusBadRequest,
 			ErrorMsg:   err.Error(),
 		}
-		dtos.BadRequest(c, response)
+		dtos.ErrorResponse(c, response)
 		return
 	}
 	createScanResultResp, err := s.scanResultService.CreateScanResult(c, createScanResultDto)
 	if err != nil {
 		response := dtos.Response{
 			StatusCode: http.StatusInternalServerError,
-			Message:    "Create Scan Result Fail",
+			ErrorMsg:   err.Error(),
 		}
 		dtos.ErrorResponse(c, response)
 		return
@@ -87,7 +87,7 @@ func (s *ScanResultController) GetScanResultList(c *gin.Context) {
 	if err != nil {
 		response := dtos.Response{
 			StatusCode: http.StatusInternalServerError,
-			Message:    "Get Scan Result List Fail",
+			ErrorMsg:   err.Error(),
 		}
 		dtos.ErrorResponse(c, response)
 		return
@@ -116,14 +116,14 @@ func (s *ScanResultController) GetScanResultDetail(c *gin.Context) {
 			StatusCode: http.StatusBadRequest,
 			ErrorMsg:   err.Error(),
 		}
-		dtos.BadRequest(c, response)
+		dtos.ErrorResponse(c, response)
 		return
 	}
 	scanResultDetailResp, err := s.scanResultService.GetScanResultDetail(c, getScanResultDetailDto)
 	if err != nil {
 		response := dtos.Response{
 			StatusCode: http.StatusInternalServerError,
-			Message:    "Get Scan Result Detail Fail",
+			ErrorMsg:   err.Error(),
 		}
 		dtos.ErrorResponse(c, response)
 		return
@@ -169,7 +169,7 @@ func (s *ScanResultController) UpdateScanResult(c *gin.Context) {
 	if err != nil {
 		response := dtos.Response{
 			StatusCode: http.StatusInternalServerError,
-			Message:    "Update Scan Result Fail",
+			ErrorMsg:   err.Error(),
 		}
 		dtos.ErrorResponse(c, response)
 		return
@@ -205,7 +205,7 @@ func (s *ScanResultController) DeleteScanResult(c *gin.Context) {
 	if err != nil {
 		response := dtos.Response{
 			StatusCode: http.StatusInternalServerError,
-			Message:    "Delete Scan Result Fail",
+			ErrorMsg:   err.Error(),
 		}
 		dtos.ErrorResponse(c, response)
 		return
