@@ -28,7 +28,7 @@ The RESTful API to CRUD a Security Scan Result (“Result”) written by Go. The
 /entities        // Define Entity Model
 /repositories    // Data Access Layer
 /routes          // Router Definition
-/services        // Contains Business Logic 
+/services        // Contains Business Logic
 ```
 ## Technology Stack
 1. Go Gin (Web server framework)
@@ -41,7 +41,8 @@ The RESTful API to CRUD a Security Scan Result (“Result”) written by Go. The
 1. We need install Go 1.16 or later. For installation instructions, see[Installing Go](https://golang.org/doc/install).
 2. [Installing postgresQL](https://www.postgresql.org/download/)
 3. Clone the project from https://github.com/xxxle0/Test
-4. Run the command `cd /api && go mod vendor` to install dependencies of the project
+4. `cd /api` then change `app.env.example` -> `app.env`
+5. Run the command `go mod vendor` to install dependencies of the project
 ### Command
 ```javascript
 cd ./api
