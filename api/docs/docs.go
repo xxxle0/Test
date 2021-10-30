@@ -56,6 +56,18 @@ var doc = `{
                         "schema": {
                             "$ref": "#/definitions/dtos.GetScanResultListResp"
                         }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.Error"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.Error"
+                        }
                     }
                 }
             },
@@ -87,6 +99,18 @@ var doc = `{
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/dtos.CreateScanResultResp"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.Error"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.Error"
                         }
                     }
                 }
@@ -120,6 +144,18 @@ var doc = `{
                         "schema": {
                             "$ref": "#/definitions/dtos.GetScanResultDetailResp"
                         }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.Error"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.Error"
+                        }
                     }
                 }
             },
@@ -149,6 +185,18 @@ var doc = `{
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/dtos.DeleteScanResultResp"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.Error"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.Error"
                         }
                     }
                 }
@@ -188,6 +236,18 @@ var doc = `{
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/dtos.UpdateScanResultResp"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.Error"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.Error"
                         }
                     }
                 }
@@ -234,6 +294,17 @@ var doc = `{
             "properties": {
                 "message": {
                     "type": "string"
+                }
+            }
+        },
+        "dtos.Error": {
+            "type": "object",
+            "properties": {
+                "error_message": {
+                    "type": "string"
+                },
+                "status_code": {
+                    "type": "integer"
                 }
             }
         },
@@ -309,6 +380,9 @@ var doc = `{
         },
         "dtos.UpdateScanResultDto": {
             "type": "object",
+            "required": [
+                "id"
+            ],
             "properties": {
                 "findings": {
                     "type": "array",

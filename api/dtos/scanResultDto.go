@@ -18,16 +18,16 @@ type GetScanResultDetailDto struct {
 }
 
 type GetScanResultListDto struct {
-	Limit  int `form:"limit"`
+	Limit  int `form:"limit" `
 	Offset int `form:"offset"`
 }
 
 type DeleteScanResultDto struct {
-	ID int `uri:"id"`
+	ID int `uri:"id" binding:"required"`
 }
 
 type UpdateScanResultDto struct {
-	ID             int          `uri:"id"`
+	ID             int          `uri:"id" binding:"required"`
 	Status         string       `json:"status"`
 	RepositoryName string       `json:"repository_name"`
 	Findings       []FindingDto `json:"findings"`
