@@ -33,6 +33,7 @@ The RESTful API to CRUD a Security Scan Result (“Result”) written by Go. The
 2. Gorm (ORM package)
 3. PosgresQL (RDBMS)
 4. Viper (Config loader package)
+5. Testify (Testing suite)
 ## How to run
 ### Prerequisites
 1. We need install Go 1.16 or later. For installation instructions, see[Installing Go](https://golang.org/doc/install).
@@ -43,5 +44,6 @@ The RESTful API to CRUD a Security Scan Result (“Result”) written by Go. The
 ```javascript
 make swagger-migrate // Update api documentation
 make build // Build docker image
-make run // Run Go Project
+make run // Run Project
+make test // Run unit test 
 ```
