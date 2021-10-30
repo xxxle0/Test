@@ -14,7 +14,7 @@ type CreateScanResultDto struct {
 }
 
 type GetScanResultDetailDto struct {
-	ID int `uri:"id"`
+	ID int `uri:"id" binding:"required"`
 }
 
 type GetScanResultListDto struct {

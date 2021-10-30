@@ -6,6 +6,7 @@ import (
 	"github.com/duybkit13/api/dtos"
 	"github.com/duybkit13/api/services"
 	"github.com/gin-gonic/gin"
+	"gorm.io/gorm"
 )
 
 type ScanResultControllerI interface {
@@ -109,7 +110,7 @@ func (s *ScanResultController) GetScanResultList(c *gin.Context) {
 // @Produce  json
 // @Param id path int true "Scan Result ID"
 // @Success 200 {object} dtos.GetScanResultDetailResp
-// @Failure 400,500 {object} dtos.Error
+// @Failure 400,404,500 {object} dtos.Error
 // @Router /v1/scan-results/{id} [get]
 func (s *ScanResultController) GetScanResultDetail(c *gin.Context) {
 	var getScanResultDetailDto dtos.GetScanResultDetailDto
@@ -124,11 +125,19 @@ func (s *ScanResultController) GetScanResultDetail(c *gin.Context) {
 	}
 	scanResultDetailResp, err := s.scanResultService.GetScanResultDetail(c, getScanResultDetailDto)
 	if err != nil {
-		response := dtos.Error{
-			StatusCode: http.StatusInternalServerError,
-			ErrorMsg:   err.Error(),
+		if err == gorm.ErrRecordNotFound {
+			response := dtos.Error{
+				StatusCode: http.StatusNotFound,
+				ErrorMsg:   err.Error(),
+			}
+			dtos.ErrorResponse(c, response)
+		} else {
+			response := dtos.Error{
+				StatusCode: http.StatusInternalServerError,
+				ErrorMsg:   err.Error(),
+			}
+			dtos.ErrorResponse(c, response)
 		}
-		dtos.ErrorResponse(c, response)
 		return
 	}
 	response := dtos.Response{
@@ -147,7 +156,7 @@ func (s *ScanResultController) GetScanResultDetail(c *gin.Context) {
 // @Param  RequestPayload body dtos.UpdateScanResultDto true "The Request Payload to update Scan Result"
 // @Param id path int true "Scan Result ID"
 // @Success 200 {object} dtos.UpdateScanResultResp
-// @Failure 400,500 {object} dtos.Error
+// @Failure 400,404,500 {object} dtos.Error
 // @Router /v1/scan-results/{id} [patch]
 func (s *ScanResultController) UpdateScanResult(c *gin.Context) {
 	var updateScanResultDto dtos.UpdateScanResultDto
@@ -171,11 +180,19 @@ func (s *ScanResultController) UpdateScanResult(c *gin.Context) {
 	}
 	updateScanResultResp, err := s.scanResultService.UpdateScanResult(c, updateScanResultDto)
 	if err != nil {
-		response := dtos.Error{
-			StatusCode: http.StatusInternalServerError,
-			ErrorMsg:   err.Error(),
+		if err == gorm.ErrRecordNotFound {
+			response := dtos.Error{
+				StatusCode: http.StatusNotFound,
+				ErrorMsg:   err.Error(),
+			}
+			dtos.ErrorResponse(c, response)
+		} else {
+			response := dtos.Error{
+				StatusCode: http.StatusInternalServerError,
+				ErrorMsg:   err.Error(),
+			}
+			dtos.ErrorResponse(c, response)
 		}
-		dtos.ErrorResponse(c, response)
 		return
 	}
 	response := dtos.Response{
@@ -193,7 +210,7 @@ func (s *ScanResultController) UpdateScanResult(c *gin.Context) {
 // @Produce  json
 // @Param id path int true "Scan Result ID"
 // @Success 200 {object} dtos.DeleteScanResultResp
-// @Failure 400,500 {object} dtos.Error
+// @Failure 400,404,500 {object} dtos.Error
 // @Router /v1/scan-results/{id} [delete]
 func (s *ScanResultController) DeleteScanResult(c *gin.Context) {
 	var deleteScanResultDto dtos.DeleteScanResultDto
@@ -208,11 +225,19 @@ func (s *ScanResultController) DeleteScanResult(c *gin.Context) {
 	}
 	deleteScanResultResp, err := s.scanResultService.DeleteScanResult(c, deleteScanResultDto)
 	if err != nil {
-		response := dtos.Error{
-			StatusCode: http.StatusInternalServerError,
-			ErrorMsg:   err.Error(),
+		if err == gorm.ErrRecordNotFound {
+			response := dtos.Error{
+				StatusCode: http.StatusNotFound,
+				ErrorMsg:   err.Error(),
+			}
+			dtos.ErrorResponse(c, response)
+		} else {
+			response := dtos.Error{
+				StatusCode: http.StatusInternalServerError,
+				ErrorMsg:   err.Error(),
+			}
+			dtos.ErrorResponse(c, response)
 		}
-		dtos.ErrorResponse(c, response)
 		return
 	}
 	response := dtos.Response{
