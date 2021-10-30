@@ -316,10 +316,19 @@ var doc = `{
                         "$ref": "#/definitions/dtos.FindingDto"
                     }
                 },
+                "finished_at": {
+                    "type": "string"
+                },
                 "id": {
                     "type": "integer"
                 },
+                "queued_at": {
+                    "type": "string"
+                },
                 "repository_name": {
+                    "type": "string"
+                },
+                "scanning_at": {
                     "type": "string"
                 },
                 "status": {

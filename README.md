@@ -11,8 +11,10 @@ The RESTful API to CRUD a Security Scan Result (“Result”) written by Go. The
 ## Diagrams
 ### General Architect
 ![General Architect](https://github.com/xxxle0/guardrails-test/blob/master/General%20Architect.png?raw=true)
+*Notes: This is my proposal architect if I build a repo scan service not what I have implemented on this repo*
 ### ERD
 ![ERD](https://github.com/xxxle0/guardrails-test/blob/master/ERD.png?raw=true)
+*Notes: This is my proposal ERD if I build a repo scan service not what I have implemented on this repo*
 ## Project Structures
 ```
 /adapters

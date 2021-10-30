@@ -4,7 +4,7 @@ run:
 
 build:
 	@echo "======= Build Docker Image ======="
-	docker build -t guardrails-api -f ./deployments/Dockerfile .
+	docker build -t duybkit13/guard-test -f ./deployments/Dockerfile .
 
 swagger-migrate:
 	@echo "======= Swagger Migrate ======="

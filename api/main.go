@@ -15,7 +15,7 @@ import (
 func main() {
 	config, err := configurations.LoadConfig(".")
 	if err != nil {
-		log.Fatal("Load Config Fail")
+		log.Println("Load Config Fail")
 	}
 	db, err := databases.InitPostgresQLClient(config)
 	if err != nil {

@@ -1,14 +1,22 @@
 version: "3.9"
 services:
   db:
-    image: mongodb
-  dashboard:
-    image: duybkit13/guardrails-dashboard
+    image: postgres
+    restart: always
     ports:
-      - "3001:3000"
+      - 5432:5432
+    environment:
+      POSTGRES_PASSWORD: destini123
   api:
-    image: duybkit13/guardrails-api
+    image: duybkit13/guard-test
     ports:
-      - "3000:3000"
+      - 8080:8080
+    links:
+      - "db"
     depends_on:
       - "db"
+    environment:
+      DB_DRIVER: postgres
+      DB_SOURCE: postgresql://postgres:destini123@db:5432/postgres?sslmode=disable
+      SERVER_ADDRESS: 0.0.0.0:8080
+      DB_AUTO_MIGRATION: "true"

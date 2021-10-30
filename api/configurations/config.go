@@ -19,6 +19,10 @@ func LoadConfig(path string) (Config, error) {
 	viper.AutomaticEnv()
 	err := viper.ReadInConfig()
 	if err != nil {
+		config.DBAutoMigration = viper.GetBool("DB_AUTO_MIGRATION")
+		config.DBDriver = viper.GetString("DB_DRIVER")
+		config.DBSource = viper.GetString("DB_SOURCE")
+		config.ServerAddress = viper.GetString("SERVER_ADDRESS")
 		return config, err
 	}
 	err = viper.Unmarshal(&config)
