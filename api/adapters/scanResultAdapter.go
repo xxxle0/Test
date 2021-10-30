@@ -41,26 +41,39 @@ func ScanResultRespAdapter(scanResult entities.Result) (dtos.ScanResultResp, err
 	scanResultResp.ScanningAt = scanResult.ScanningAt
 	scanResultResp.FinishedAt = scanResult.FinishedAt
 	scanResultResp.RepositoryName = scanResult.RepositoryName
-	scanResultResp.Findings = scanResultFindingResp
+	if len(scanResultFindingResp) > 0 {
+		scanResultResp.Findings = scanResultFindingResp
+	}
 	return scanResultResp, nil
 }
 
 func ScanResultAdapter(scanResultDto dtos.CreateScanResultDto) (entities.Result, error) {
 	findings := make([]entities.Finding, len(scanResultDto.Findings))
 	for i, v := range scanResultDto.Findings {
-		locationByteSlice, err := json.Marshal(v.Location)
-		if err != nil {
-			return entities.Result{}, err
+		var locationByteSlice []byte
+		var metadataByteSlice []byte
+		var err error
+		if len(v.Location) > 0 {
+			locationByteSlice, err = json.Marshal(v.Location)
+			if err != nil {
+				return entities.Result{}, err
+			}
 		}
-		metadataByteSlice, err := json.Marshal(v.Metadata)
-		if err != nil {
-			return entities.Result{}, err
+		if len(v.Metadata) > 0 {
+			metadataByteSlice, err = json.Marshal(v.Metadata)
+			if err != nil {
+				return entities.Result{}, err
+			}
 		}
 		findings[i] = entities.Finding{
-			Type:     v.Type,
-			RuleID:   v.RuleID,
-			Location: datatypes.JSON(locationByteSlice),
-			Metadata: datatypes.JSON(metadataByteSlice),
+			Type:   v.Type,
+			RuleID: v.RuleID,
+		}
+		if len(locationByteSlice) > 0 {
+			findings[i].Location = datatypes.JSON(locationByteSlice)
+		}
+		if len(metadataByteSlice) > 0 {
+			findings[i].Metadata = datatypes.JSON(metadataByteSlice)
 		}
 	}
 	scanResult := entities.Result{

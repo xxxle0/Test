@@ -109,6 +109,9 @@ func (s *ScanResultService) UpdateScanResult(ctx context.Context, updateScanResu
 	newPayload := entities.Result{
 		RepositoryName: updateScanResultDto.RepositoryName,
 		Status:         updateScanResultDto.Status,
+		QueuedAt:       updateScanResultDto.QueuedAt,
+		ScanningAt:     updateScanResultDto.ScanningAt,
+		FinishedAt:     updateScanResultDto.FinishedAt,
 	}
 	err := s.scanResultRepository.Update(ctx, condition, newPayload)
 	if err != nil {

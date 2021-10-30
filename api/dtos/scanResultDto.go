@@ -31,6 +31,9 @@ type UpdateScanResultDto struct {
 	Status         string       `json:"status"`
 	RepositoryName string       `json:"repository_name"`
 	Findings       []FindingDto `json:"findings"`
+	QueuedAt       time.Time    `json:"queued_at"`
+	ScanningAt     time.Time    `json:"scanning_at"`
+	FinishedAt     time.Time    `json:"finished_at"`
 }
 
 type CreateScanResultResp struct {

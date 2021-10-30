@@ -3,8 +3,8 @@ package dtos
 type FindingDto struct {
 	Type     string                 `json:"type,omitempty"`
 	RuleID   string                 `json:"ruleId,omitempty"`
-	Metadata map[string]interface{} `json:"metadata,omitempty"`
-	Location map[string]interface{} `json:"location,omitempty"`
+	Metadata map[string]interface{} `json:"metadata"`
+	Location map[string]interface{} `json:"location"`
 }
 
 type FindingLocationDto struct {

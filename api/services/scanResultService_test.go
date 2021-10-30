@@ -3,6 +3,7 @@ package services
 import (
 	"context"
 	"testing"
+	"time"
 
 	"github.com/duybkit13/api/adapters"
 	"github.com/duybkit13/api/dtos"
@@ -26,7 +27,7 @@ func (m *MockScanResultRepository) FindOne(ctx context.Context, condition map[st
 }
 
 func (m *MockScanResultRepository) FindMany(ctx context.Context, condition map[string]interface{}, limit, offset int) ([]entities.Result, error) {
-	ret := m.Called(ctx, condition)
+	ret := m.Called(ctx, condition, limit, offset)
 	return ret.Get(0).([]entities.Result), ret.Error(1)
 }
 
@@ -46,9 +47,13 @@ func (m *MockScanResultRepository) Count(ctx context.Context, condition map[stri
 }
 
 func TestCreateScanResult(t *testing.T) {
+	currentTime := time.Now()
 	createScanResultDto := dtos.CreateScanResultDto{
 		Status:         "Queued",
 		RepositoryName: "Repo Test 1",
+		QueuedAt:       currentTime,
+		ScanningAt:     currentTime,
+		FinishedAt:     currentTime,
 	}
 	scanResultDto, _ := adapters.ScanResultAdapter(createScanResultDto)
 	expectCreateScanResultResp := dtos.CreateScanResultResp{
@@ -62,31 +67,64 @@ func TestCreateScanResult(t *testing.T) {
 	mockScanResultRepository.AssertExpectations(t)
 }
 
-// func TestGetScanResultDetail(t *testing.T) {
-// 	condition := map[string]interface{}{
-// 		"id": 1,
-// 	}
-// 	mockScanResult := entities.Result{
-// 		Status:         "Queued",
-// 		RepositoryName: "Repo Test 1",
-// 	}
-// 	scanResultDto := dtos.GetScanResultDetailDto{
-// 		ID: 1,
-// 	}
-// 	expectScanResultResp := dtos.GetScanResultDetailResp{
-// 		ScanResult: dtos.ScanResultResp{},
-// 	}
-// 	mockScanResultRepository := new(MockScanResultRepository)
-// 	mockScanResultRepository.On("FindOne", context.Background(), condition).Return(mockScanResult)
-// 	scanResultService := InitScanResultService(mockScanResultRepository)
-// 	scanResultResp, _ := scanResultService.GetScanResultDetail(context.Background(), scanResultDto)
-// 	assert.Equal(t, expectScanResultResp, scanResultResp)
-// 	mockScanResultRepository.AssertExpectations(t)
-// }
+func TestGetScanResultDetail(t *testing.T) {
+	currentTime := time.Now()
+	scanResultDto := dtos.GetScanResultDetailDto{
+		ID: 1,
+	}
+	condition := map[string]interface{}{
+		"id": scanResultDto.ID,
+	}
+	mockScanResult := entities.Result{
+		Status:         "Queued",
+		RepositoryName: "Repo Test 1",
+		QueuedAt:       currentTime,
+		ScanningAt:     currentTime,
+		FinishedAt:     currentTime,
+	}
+	mockScanResultResp, _ := adapters.ScanResultRespAdapter(mockScanResult)
+	expectScanResultResp := dtos.GetScanResultDetailResp{
+		ScanResult: mockScanResultResp,
+	}
+	mockScanResultRepository := new(MockScanResultRepository)
+	mockScanResultRepository.On("FindOne", context.Background(), condition).Return(mockScanResult, nil)
+	scanResultService := InitScanResultService(mockScanResultRepository)
+	scanResultResp, _ := scanResultService.GetScanResultDetail(context.Background(), scanResultDto)
+	assert.Equal(t, expectScanResultResp, scanResultResp)
+	mockScanResultRepository.AssertExpectations(t)
+}
 
 func TestFindManyScanResult(t *testing.T) {
+	currentTime := time.Now()
+	getScanResultListDto := dtos.GetScanResultListDto{
+		Limit:  10,
+		Offset: 0,
+	}
+	condition := map[string]interface{}{}
+	scanResult := entities.Result{
+		RepositoryName: "Test 1",
+		Status:         "Queued",
+		QueuedAt:       currentTime,
+		ScanningAt:     currentTime,
+		FinishedAt:     currentTime,
+	}
+	scanResultList := []entities.Result{
+		scanResult,
+	}
+	scanResultResp, _ := adapters.ScanResultRespAdapter(scanResult)
+	mockScanResultListResp := []dtos.ScanResultResp{
+		scanResultResp,
+	}
+	expectedScanResultList := dtos.GetScanResultListResp{
+		Total:       10,
+		ScanResults: mockScanResultListResp,
+	}
 	mockScanResultRepository := new(MockScanResultRepository)
-	mockScanResultRepository.On("FindMany", context.Background()).Return(nil)
+	mockScanResultRepository.On("FindMany", context.Background(), condition, getScanResultListDto.Limit, getScanResultListDto.Offset).Return(scanResultList, nil)
+	mockScanResultRepository.On("Count", context.Background(), condition).Return(10)
+	scanResultService := InitScanResultService(mockScanResultRepository)
+	scanResultListResp, _ := scanResultService.GetScanResultList(context.Background(), getScanResultListDto)
+	assert.Equal(t, expectedScanResultList, scanResultListResp)
 	mockScanResultRepository.AssertExpectations(t)
 }
 
@@ -95,7 +133,7 @@ func TestDeleteScanResult(t *testing.T) {
 		ID: 1,
 	}
 	condition := map[string]interface{}{
-		"id": 1,
+		"id": deleteScanResultDto.ID,
 	}
 	expectDeleteScanResultResp := dtos.DeleteScanResultResp{
 		Message: "Delete Scan Result Success",
@@ -115,11 +153,11 @@ func TestUpdateScanResult(t *testing.T) {
 		Status:         "Queued",
 	}
 	condition := map[string]interface{}{
-		"id": 1,
+		"id": updateScanResultDto.ID,
 	}
 	newPayload := entities.Result{
-		RepositoryName: "Test",
-		Status:         "Queued",
+		RepositoryName: updateScanResultDto.RepositoryName,
+		Status:         updateScanResultDto.Status,
 	}
 	expectUpdateScanResultResp := dtos.UpdateScanResultResp{
 		Message: "Update Scan Result Success",

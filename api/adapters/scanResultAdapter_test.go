@@ -1,26 +1,46 @@
 package adapters
 
 import (
+	"encoding/json"
 	"testing"
 	"time"
 
 	"github.com/duybkit13/api/dtos"
 	"github.com/duybkit13/api/entities"
 	"github.com/stretchr/testify/assert"
+	"gorm.io/datatypes"
 )
-
-func InitTableDrivenTest() {
-
-}
 
 func TestScanResultRespAdapter(t *testing.T) {
 	currentTime := time.Now()
+	metadata := map[string]interface{}{
+		"description": "TLS InsecureSkipVerify set true.",
+		"severity":    "HIGH",
+	}
+	location := map[string]interface{}{
+		"path": "connectors/apigateway.go",
+		"positions": map[string]interface{}{
+			"begin": map[string]interface{}{
+				"line": float64(60),
+			},
+		},
+	}
+	metadataByteSlice, _ := json.Marshal(metadata)
+	locationByteSlice, _ := json.Marshal(location)
 	scanResult := entities.Result{
 		RepositoryName: "Test Repo 1",
 		Status:         "Success",
 		QueuedAt:       currentTime,
 		FinishedAt:     currentTime,
 		ScanningAt:     currentTime,
+		Findings: []entities.Finding{
+			entities.Finding{
+				Type:     "sast",
+				RuleID:   "G402",
+				Location: datatypes.JSON(locationByteSlice),
+				Metadata: datatypes.JSON(metadataByteSlice),
+			},
+		},
 	}
 	exectedScanResultResp := dtos.ScanResultResp{
 		RepositoryName: "Test Repo 1",
@@ -28,35 +48,94 @@ func TestScanResultRespAdapter(t *testing.T) {
 		QueuedAt:       currentTime,
 		FinishedAt:     currentTime,
 		ScanningAt:     currentTime,
+		Findings: []dtos.FindingDto{
+			dtos.FindingDto{
+				Type:     "sast",
+				RuleID:   "G402",
+				Metadata: metadata,
+				Location: location,
+			},
+		},
+	}
+	wrongScanResultResp := dtos.ScanResultResp{
+		RepositoryName: "Test Repo 1",
+		Status:         "Success",
+		QueuedAt:       currentTime,
+		FinishedAt:     currentTime,
+		ScanningAt:     currentTime,
+		Findings: []dtos.FindingDto{
+			dtos.FindingDto{
+				Type:     "1",
+				RuleID:   "G402",
+				Metadata: metadata,
+				Location: location,
+			},
+		},
 	}
 	scanResultResp, _ := ScanResultRespAdapter(scanResult)
-	assert.Equal(t, scanResultResp.Status, exectedScanResultResp.Status, "got %q, wanted %q")
-	assert.Equal(t, scanResultResp.RepositoryName, exectedScanResultResp.RepositoryName, "got %q, wanted %q")
-	assert.Equal(t, scanResultResp.QueuedAt, exectedScanResultResp.QueuedAt, "got %q, wanted %q")
-	assert.Equal(t, scanResultResp.ScanningAt, exectedScanResultResp.ScanningAt, "got %q, wanted %q")
-	assert.Equal(t, scanResultResp.FinishedAt, exectedScanResultResp.FinishedAt, "got %q, wanted %q")
+	assert.Equal(t, scanResultResp, exectedScanResultResp)
+	assert.NotEqual(t, scanResultResp, wrongScanResultResp)
 }
 
 func TestScanResultAdapter(t *testing.T) {
 	currentTime := time.Now()
+	metadata := map[string]interface{}{
+		"description": "TLS InsecureSkipVerify set true.",
+		"severity":    "HIGH",
+	}
+	location := map[string]interface{}{
+		"path": "connectors/apigateway.go",
+		"positions": map[string]interface{}{
+			"begin": map[string]interface{}{
+				"line": 60,
+			},
+		},
+	}
+	metadataByteSlice, _ := json.Marshal(metadata)
+	locationByteSlice, _ := json.Marshal(location)
 	scanResultDto := dtos.CreateScanResultDto{
 		RepositoryName: "Test Repo",
 		Status:         "Fail",
 		QueuedAt:       currentTime,
 		FinishedAt:     currentTime,
 		ScanningAt:     currentTime,
+		Findings: []dtos.FindingDto{
+			dtos.FindingDto{
+				Type:     "sast",
+				RuleID:   "G402",
+				Metadata: metadata,
+				Location: location,
+			},
+		},
 	}
-	scanResult := entities.Result{
+	expectScanResult := entities.Result{
 		RepositoryName: "Test Repo",
 		Status:         "Fail",
 		QueuedAt:       currentTime,
 		FinishedAt:     currentTime,
 		ScanningAt:     currentTime,
+		Findings: []entities.Finding{
+			entities.Finding{
+				Type:     "sast",
+				RuleID:   "G402",
+				Metadata: datatypes.JSON(metadataByteSlice),
+				Location: datatypes.JSON(locationByteSlice),
+			},
+		},
 	}
-	expectedScanResult, _ := ScanResultAdapter(scanResultDto)
-	assert.Equal(t, scanResult.Status, expectedScanResult.Status, "got %q, wanted %q")
-	assert.Equal(t, scanResult.RepositoryName, expectedScanResult.RepositoryName, "got %q, wanted %q")
-	assert.Equal(t, scanResult.QueuedAt, expectedScanResult.QueuedAt, "got %q, wanted %q")
-	assert.Equal(t, scanResult.ScanningAt, expectedScanResult.ScanningAt, "got %q, wanted %q")
-	assert.Equal(t, scanResult.FinishedAt, expectedScanResult.FinishedAt, "got %q, wanted %q")
+	wrongExpectScanResult := entities.Result{
+		RepositoryName: "Test Repo",
+		QueuedAt:       currentTime,
+		FinishedAt:     currentTime,
+		ScanningAt:     currentTime,
+		Findings: []entities.Finding{
+			entities.Finding{
+				Type:   "test",
+				RuleID: "test",
+			},
+		},
+	}
+	scanResult, _ := ScanResultAdapter(scanResultDto)
+	assert.Equal(t, expectScanResult, scanResult)
+	assert.NotEqual(t, wrongExpectScanResult, scanResult)
 }

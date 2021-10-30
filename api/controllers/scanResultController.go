@@ -153,7 +153,7 @@ func (s *ScanResultController) UpdateScanResult(c *gin.Context) {
 			StatusCode: http.StatusBadRequest,
 			ErrorMsg:   err.Error(),
 		}
-		dtos.BadRequest(c, response)
+		dtos.ErrorResponse(c, response)
 		return
 	}
 	err = c.ShouldBindJSON(&updateScanResultDto)
@@ -162,7 +162,7 @@ func (s *ScanResultController) UpdateScanResult(c *gin.Context) {
 			StatusCode: http.StatusBadRequest,
 			ErrorMsg:   err.Error(),
 		}
-		dtos.BadRequest(c, response)
+		dtos.ErrorResponse(c, response)
 		return
 	}
 	updateScanResultResp, err := s.scanResultService.UpdateScanResult(c, updateScanResultDto)

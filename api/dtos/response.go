@@ -7,10 +7,10 @@ import (
 )
 
 type Response struct {
-	Data       interface{} `json:"data"`
-	Message    string      `json:"message"`
-	ErrorMsg   string      `json:"error_message"`
-	StatusCode int         `json:"status_code"`
+	Data       interface{} `json:"data,omitempty"`
+	Message    string      `json:"message,omitempty"`
+	ErrorMsg   string      `json:"error_message,omitempty"`
+	StatusCode int         `json:"status_code,omitempty"`
 }
 
 func HttpResponse(c *gin.Context, res Response) {
