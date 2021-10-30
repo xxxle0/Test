@@ -191,6 +191,10 @@ paths:
           description: Bad Request
           schema:
             $ref: '#/definitions/dtos.Error'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/dtos.Error'
         "500":
           description: Internal Server Error
           schema:
@@ -217,6 +221,10 @@ paths:
             $ref: '#/definitions/dtos.GetScanResultDetailResp'
         "400":
           description: Bad Request
+          schema:
+            $ref: '#/definitions/dtos.Error'
+        "404":
+          description: Not Found
           schema:
             $ref: '#/definitions/dtos.Error'
         "500":
@@ -251,6 +259,10 @@ paths:
             $ref: '#/definitions/dtos.UpdateScanResultResp'
         "400":
           description: Bad Request
+          schema:
+            $ref: '#/definitions/dtos.Error'
+        "404":
+          description: Not Found
           schema:
             $ref: '#/definitions/dtos.Error'
         "500":
