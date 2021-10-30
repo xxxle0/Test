@@ -40,12 +40,17 @@ The RESTful API to CRUD a Security Scan Result (“Result”) written by Go. The
 ### Prerequisites
 1. We need install Go 1.16 or later. For installation instructions, see[Installing Go](https://golang.org/doc/install).
 2. [Installing postgresQL](https://www.postgresql.org/download/)
-3. Clone the project from https://github.com/xxxle0/guardrails-test
+3. Clone the project from https://github.com/xxxle0/Test
 4. Run the command `cd /api && go mod vendor` to install dependencies of the project
 ### Command
 ```javascript
+cd ./api
 make swagger-migrate // Update api documentation
 make build // Build docker image
 make run // Run Project
 make test // Run unit test 
+```
+You can also use docker-compose to run because I have pushed the docker image of API to public docker repository `duybkit13/guard-test`
+```javascript
+docker compose up
 ```
