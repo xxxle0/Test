@@ -17,18 +17,18 @@ The RESTful API to CRUD a Security Scan Result (“Result”) written by Go. The
 *Notes: This is my proposal ERD if I build a repo scan service not what I have implemented on this repo*
 ## Project Structures
 ```
-/adapters
-/configurations
-/controllers
-/databases
-/deployments
-/docs
-/documentations
-/dtos
-/entities
-/repositories
-/routes
-/services
+/adapters        // Map structure between entity and dto
+/configurations  // Config
+/controllers     // Route Handler
+/databases       // Database Config
+/deployments     // Deployment stuff like helm template, Dockerfile
+/docs            // Swagger Generate
+/documentations  // Swagger Config
+/dtos            // Dto
+/entities        // Define Entity Model
+/repositories    // Data Access Layer
+/routes          // Router Definition
+/services        // Contains Business Logic 
 ```
 ## Technology Stack
 1. Go Gin (Web server framework)
