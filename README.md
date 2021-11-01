@@ -1,7 +1,10 @@
 # API
+
 ## Introduction
-The Web service RESTful API to CRUD a Security Scan Result (“Result”) written by Go. 
+
+The Web service RESTful API to CRUD a Security Scan Result (“Result”) written by Go.
 The structure of Result
+
 - Id: any type of unique id
 - Status: "Queued" | "In Progress" | "Success" | "Failure"
 - RepositoryName: string
@@ -9,14 +12,21 @@ The structure of Result
 - QueuedAt: timestamp
 - ScanningAt: timestamp
 - FinishedAt: timestamp
+
 ## Diagrams
+
 ### General Architect
+
 ![General Architect](https://github.com/xxxle0/guardrails-test/blob/master/General%20Architect.png?raw=true)
-*Notes: This is my architect proposal if I build a repo scalable scan service not what I have implemented on this repo*
+_Notes: This is my architect proposal if I build a repo scalable scan service not what I have implemented on this repo_
+
 ### ERD
+
 ![ERD](https://github.com/xxxle0/guardrails-test/blob/master/ERD.png?raw=true)
-*Notes: This is my ERD proposal if I build a repo scalable scan service not what I have implemented on this repo*
+_Notes: This is my ERD proposal if I build a repo scalable scan service not what I have implemented on this repo_
+
 ## Project Structures
+
 ```
 /adapters        // Map structure between entity and dto
 /configurations  // Config
@@ -31,28 +41,38 @@ The structure of Result
 /routes          // Router Definition
 /services        // Contains Business Logic
 ```
+
 ## Technology Stack
+
 1. Go Gin (HTTP Web framework)
 2. Gorm (ORM)
 3. PosgresQL (RDBMS)
 4. Viper (Config loader)
 5. Testify (Testing suite)
+
 ## How to run
+
 ### Prerequisites
-1. We need install Go 1.16 or later. For installation instructions, see[Installing Go](https://golang.org/doc/install).
+
+1. We need install Go 1.16 or later. For installation instructions, see [Installing Go](https://golang.org/doc/install).
 2. [Installing postgresQL](https://www.postgresql.org/download/)
 3. Clone the project from https://github.com/xxxle0/Test
 4. `cd /api` then change `app.env.example` -> `app.env`
 5. Run the command `go mod vendor` to install dependencies of the project
+
 ### Command
+
 ```javascript
 cd ./api
 make swagger-migrate // Update api documentation
 make build // Build docker image
 make run // Run Project
-make test // Run unit test 
+make test // Run unit test
 ```
+
 You can also use docker-compose to run because I have pushed the docker image of API to public docker repository `duybkit13/guard-test`
+
 ```javascript
 docker compose up
 ```
+
