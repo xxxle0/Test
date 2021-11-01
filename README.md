@@ -1,6 +1,7 @@
 # API
 ## Introduction
-The RESTful API to CRUD a Security Scan Result (“Result”) written by Go. The structure of Result
+The Web service RESTful API to CRUD a Security Scan Result (“Result”) written by Go. 
+The structure of Result
 - Id: any type of unique id
 - Status: "Queued" | "In Progress" | "Success" | "Failure"
 - RepositoryName: string
@@ -11,10 +12,10 @@ The RESTful API to CRUD a Security Scan Result (“Result”) written by Go. The
 ## Diagrams
 ### General Architect
 ![General Architect](https://github.com/xxxle0/guardrails-test/blob/master/General%20Architect.png?raw=true)
-*Notes: This is my proposal architect if I build a repo scan service not what I have implemented on this repo*
+*Notes: This is my architect proposal if I build a repo scalable scan service not what I have implemented on this repo*
 ### ERD
 ![ERD](https://github.com/xxxle0/guardrails-test/blob/master/ERD.png?raw=true)
-*Notes: This is my proposal ERD if I build a repo scan service not what I have implemented on this repo*
+*Notes: This is my ERD proposal if I build a repo scalable scan service not what I have implemented on this repo*
 ## Project Structures
 ```
 /adapters        // Map structure between entity and dto
@@ -31,10 +32,10 @@ The RESTful API to CRUD a Security Scan Result (“Result”) written by Go. The
 /services        // Contains Business Logic
 ```
 ## Technology Stack
-1. Go Gin (Web server framework)
-2. Gorm (ORM package)
+1. Go Gin (HTTP Web framework)
+2. Gorm (ORM)
 3. PosgresQL (RDBMS)
-4. Viper (Config loader package)
+4. Viper (Config loader)
 5. Testify (Testing suite)
 ## How to run
 ### Prerequisites
