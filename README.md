@@ -18,12 +18,12 @@ The structure of Result
 ### General Architect
 
 ![General Architect](https://github.com/xxxle0/guardrails-test/blob/master/General%20Architect.png?raw=true)
-_Notes: This is my architect proposal if I build a repo scalable scan service not what I have implemented on this repo_
+_Notes: This is my architect proposal if I build a scalable scan service not what I have implemented on this repo_
 
 ### ERD
 
 ![ERD](https://github.com/xxxle0/guardrails-test/blob/master/ERD.png?raw=true)
-_Notes: This is my ERD proposal if I build a repo scalable scan service not what I have implemented on this repo_
+_Notes: This is my ERD proposal if I build a scalable scan service not what I have implemented on this repo_
 
 ## Project Structures
 
@@ -75,4 +75,3 @@ You can also use docker-compose to run because I have pushed the docker image of
 ```javascript
 docker compose up
 ```
-
