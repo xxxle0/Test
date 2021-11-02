@@ -25,6 +25,10 @@ _Notes: This is my architect proposal if I build a scalable scan service not wha
 ![ERD](https://github.com/xxxle0/guardrails-test/blob/master/ERD.png?raw=true)
 _Notes: This is my ERD proposal if I build a scalable scan service not what I have implemented on this repo_
 
+### API Documentation
+
+![API documentation](https://github.com/xxxle0/Test/blob/master/API%20Documentation.png?raw=true)
+*After run the project success, you can access API documentation via http://localhost:8080/swagger/index.html#/default/*
 ## Project Structures
 
 ```
@@ -49,6 +53,7 @@ _Notes: This is my ERD proposal if I build a scalable scan service not what I ha
 3. PosgresQL (RDBMS)
 4. Viper (Config loader)
 5. Testify (Testing suite)
+6. Swaggo (API documentation)
 
 ## How to run
 
